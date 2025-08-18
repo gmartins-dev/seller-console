@@ -18,15 +18,25 @@ export function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Data fetching
-  const { data: leads, isLoading: leadsLoading, error: leadsError, refetch: refetchLeads } = useLeadsQuery();
-  const { data: opportunities, isLoading: opportunitiesLoading, error: opportunitiesError } = useOpportunitiesQuery();
-  
+  const {
+    data: leads,
+    isLoading: leadsLoading,
+    error: leadsError,
+    refetch: refetchLeads,
+  } = useLeadsQuery();
+  const {
+    data: opportunities,
+    isLoading: opportunitiesLoading,
+    error: opportunitiesError,
+  } = useOpportunitiesQuery();
+
   // Filters
   const { stats } = useLeadFilters();
 
   // Calculate dashboard stats
   const totalOpportunities = opportunities?.length || 0;
-  const totalOpportunityValue = opportunities?.reduce((sum, opp) => sum + (opp.amount || 0), 0) || 0;
+  const totalOpportunityValue =
+    opportunities?.reduce((sum, opp) => sum + (opp.amount || 0), 0) || 0;
   const avgDealSize = totalOpportunities > 0 ? totalOpportunityValue / totalOpportunities : 0;
 
   const dashboardStats = [
@@ -65,12 +75,12 @@ export function Dashboard() {
   ];
 
   const sidebarContent = (
-    <div className="flex flex-col h-full">
+    <div className="flex h-full flex-col">
       <div className="p-6">
-        <h2 className="text-lg font-semibold text-foreground">Seller Console</h2>
-        <p className="text-sm text-muted-foreground">Lead Management</p>
+        <h2 className="text-foreground text-lg font-semibold">Seller Console</h2>
+        <p className="text-muted-foreground text-sm">Lead Management</p>
       </div>
-      
+
       <nav className="flex-1 px-4">
         <div className="space-y-2">
           <Button
@@ -81,7 +91,7 @@ export function Dashboard() {
               setSidebarOpen(false);
             }}
           >
-            <Users className="w-4 h-4 mr-2" />
+            <Users className="mr-2 h-4 w-4" />
             Leads
             {stats.total > 0 && (
               <Badge variant="secondary" className="ml-auto">
@@ -89,7 +99,7 @@ export function Dashboard() {
               </Badge>
             )}
           </Button>
-          
+
           <Button
             variant={activeTab === 'opportunities' ? 'default' : 'ghost'}
             className="w-full justify-start"
@@ -98,7 +108,7 @@ export function Dashboard() {
               setSidebarOpen(false);
             }}
           >
-            <Target className="w-4 h-4 mr-2" />
+            <Target className="mr-2 h-4 w-4" />
             Opportunities
             {totalOpportunities > 0 && (
               <Badge variant="secondary" className="ml-auto">
@@ -108,9 +118,9 @@ export function Dashboard() {
           </Button>
         </div>
       </nav>
-      
-      <div className="p-4 border-t">
-        <div className="text-xs text-muted-foreground">
+
+      <div className="border-t p-4">
+        <div className="text-muted-foreground text-xs">
           <p>Version 1.0.0</p>
           <p>Mini Seller Console</p>
         </div>
@@ -119,11 +129,9 @@ export function Dashboard() {
   );
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="bg-background flex h-screen">
       {/* Desktop Sidebar */}
-      <div className="hidden lg:flex w-64 bg-card border-r">
-        {sidebarContent}
-      </div>
+      <div className="bg-card hidden w-64 border-r lg:flex">{sidebarContent}</div>
 
       {/* Mobile Sidebar */}
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
@@ -133,27 +141,25 @@ export function Dashboard() {
       </Sheet>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-card border-b px-4 lg:px-6 h-16 flex items-center">
+        <header className="bg-card flex h-16 items-center border-b px-4 lg:px-6">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="sm" className="lg:hidden mr-2">
-                <Menu className="w-4 h-4" />
+              <Button variant="ghost" size="sm" className="mr-2 lg:hidden">
+                <Menu className="h-4 w-4" />
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0">
               {sidebarContent}
             </SheetContent>
           </Sheet>
-          
+
           <div className="flex-1">
-            <h1 className="text-xl font-semibold text-foreground">Dashboard</h1>
-            <p className="text-sm text-muted-foreground">
-              Manage your leads and opportunities
-            </p>
+            <h1 className="text-foreground text-xl font-semibold">Dashboard</h1>
+            <p className="text-muted-foreground text-sm">Manage your leads and opportunities</p>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <ModeToggle />
           </div>
@@ -162,22 +168,18 @@ export function Dashboard() {
         {/* Main Content Area */}
         <main className="flex-1 overflow-auto p-4 lg:p-6">
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             {dashboardStats.map((stat) => (
               <Card key={stat.title}>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    {stat.title}
-                  </CardTitle>
-                  <div className={`p-2 rounded-md ${stat.bgColor}`}>
-                    <stat.icon className={`w-4 h-4 ${stat.color}`} />
+                  <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+                  <div className={`rounded-md p-2 ${stat.bgColor}`}>
+                    <stat.icon className={`h-4 w-4 ${stat.color}`} />
                   </div>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{stat.value}</div>
-                  <p className="text-xs text-muted-foreground">
-                    {stat.description}
-                  </p>
+                  <p className="text-muted-foreground text-xs">{stat.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -195,12 +197,13 @@ export function Dashboard() {
                 <CardHeader>
                   <CardTitle>Leads Management</CardTitle>
                   <CardDescription>
-                    View and manage your sales leads. Click on a lead to view details and convert to opportunities.
+                    View and manage your sales leads. Click on a lead to view details and convert to
+                    opportunities.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <LeadsFilterBar />
-                  
+
                   <LoadingState
                     isLoading={leadsLoading}
                     error={leadsError?.message}

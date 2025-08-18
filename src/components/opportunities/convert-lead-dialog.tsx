@@ -19,7 +19,13 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { LoadingOverlay } from '@/components/ui/loading-state';
 import { Target, DollarSign } from 'lucide-react';
 import { useConvertLeadMutation } from '@/lib/queries';
@@ -35,7 +41,14 @@ interface ConvertLeadDialogProps {
 
 const convertLeadSchema = z.object({
   name: z.string().min(1, 'Opportunity name is required'),
-  stage: z.enum(['prospecting', 'qualification', 'proposal', 'negotiation', 'closed_won', 'closed_lost']),
+  stage: z.enum([
+    'prospecting',
+    'qualification',
+    'proposal',
+    'negotiation',
+    'closed_won',
+    'closed_lost',
+  ]),
   amount: z.number().optional(),
   accountName: z.string().min(1, 'Account name is required'),
 });
@@ -76,7 +89,7 @@ export function ConvertLeadDialog({ lead, open, onOpenChange, onSuccess }: Conve
         leadId: lead.id,
         opportunityData: data,
       });
-      
+
       onSuccess();
       form.reset();
     } catch (error) {
@@ -89,7 +102,11 @@ export function ConvertLeadDialog({ lead, open, onOpenChange, onSuccess }: Conve
     onOpenChange(false);
   };
 
-  const stageOptions: { value: ConvertLeadFormData['stage']; label: string; description: string }[] = [
+  const stageOptions: {
+    value: ConvertLeadFormData['stage'];
+    label: string;
+    description: string;
+  }[] = [
     { value: 'prospecting', label: 'Prospecting', description: 'Initial contact and research' },
     { value: 'qualification', label: 'Qualification', description: 'Qualifying the opportunity' },
     { value: 'proposal', label: 'Proposal', description: 'Proposal submitted' },
@@ -106,7 +123,7 @@ export function ConvertLeadDialog({ lead, open, onOpenChange, onSuccess }: Conve
         <LoadingOverlay isLoading={convertLeadMutation.isPending}>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Target className="w-5 h-5" />
+              <Target className="h-5 w-5" />
               Convert Lead to Opportunity
             </DialogTitle>
             <DialogDescription>
@@ -116,7 +133,7 @@ export function ConvertLeadDialog({ lead, open, onOpenChange, onSuccess }: Conve
           </DialogHeader>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
               <FormField
                 control={form.control}
                 name="name"
@@ -161,7 +178,7 @@ export function ConvertLeadDialog({ lead, open, onOpenChange, onSuccess }: Conve
                             <SelectItem key={option.value} value={option.value}>
                               <div>
                                 <div className="font-medium">{option.label}</div>
-                                <div className="text-xs text-muted-foreground">
+                                <div className="text-muted-foreground text-xs">
                                   {option.description}
                                 </div>
                               </div>
@@ -183,7 +200,7 @@ export function ConvertLeadDialog({ lead, open, onOpenChange, onSuccess }: Conve
                     <FormLabel>Expected Amount (Optional)</FormLabel>
                     <FormControl>
                       <div className="relative">
-                        <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <DollarSign className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                         <Input
                           type="number"
                           placeholder="0.00"
@@ -206,7 +223,7 @@ export function ConvertLeadDialog({ lead, open, onOpenChange, onSuccess }: Conve
                   Cancel
                 </Button>
                 <Button type="submit">
-                  <Target className="w-4 h-4 mr-2" />
+                  <Target className="mr-2 h-4 w-4" />
                   Convert Lead
                 </Button>
               </div>

@@ -1,29 +1,25 @@
 import { useState } from 'react';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  ExternalLink, 
-  Mail, 
-  Building2, 
-  User,
-  ArrowUpDown,
-  Eye 
-} from 'lucide-react';
+import { ExternalLink, Mail, Building2, User, ArrowUpDown, Eye } from 'lucide-react';
 import { useLeadFilters, useLeadSelection } from '@/hooks/use-lead-filters';
 import { LeadDetailPanel } from './lead-detail-panel';
 import { cn } from '@/lib/utils';
 import type { Lead, LeadStatus, LeadSource } from '@/types';
 
 // Status configurations
-const statusConfig: Record<LeadStatus, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline'; color: string }> = {
+const statusConfig: Record<
+  LeadStatus,
+  { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline'; color: string }
+> = {
   new: { label: 'New', variant: 'default', color: 'bg-blue-100 text-blue-800' },
   contacted: { label: 'Contacted', variant: 'secondary', color: 'bg-yellow-100 text-yellow-800' },
   qualified: { label: 'Qualified', variant: 'default', color: 'bg-green-100 text-green-800' },
@@ -33,12 +29,12 @@ const statusConfig: Record<LeadStatus, { label: string; variant: 'default' | 'se
 
 // Source configurations
 const sourceConfig: Record<LeadSource, { label: string; icon: React.ReactNode }> = {
-  website: { label: 'Website', icon: <ExternalLink className="w-3 h-3" /> },
-  referral: { label: 'Referral', icon: <User className="w-3 h-3" /> },
-  social: { label: 'Social', icon: <ExternalLink className="w-3 h-3" /> },
-  email: { label: 'Email', icon: <Mail className="w-3 h-3" /> },
-  phone: { label: 'Phone', icon: <ExternalLink className="w-3 h-3" /> },
-  other: { label: 'Other', icon: <ExternalLink className="w-3 h-3" /> },
+  website: { label: 'Website', icon: <ExternalLink className="h-3 w-3" /> },
+  referral: { label: 'Referral', icon: <User className="h-3 w-3" /> },
+  social: { label: 'Social', icon: <ExternalLink className="h-3 w-3" /> },
+  email: { label: 'Email', icon: <Mail className="h-3 w-3" /> },
+  phone: { label: 'Phone', icon: <ExternalLink className="h-3 w-3" /> },
+  other: { label: 'Other', icon: <ExternalLink className="h-3 w-3" /> },
 };
 
 // Score color helper
@@ -64,7 +60,7 @@ export function LeadsTable() {
 
   if (filteredLeads.length === 0) {
     return (
-      <div className="text-center py-12">
+      <div className="py-12 text-center">
         <div className="text-muted-foreground">No leads match your current filters.</div>
       </div>
     );
@@ -82,31 +78,31 @@ export function LeadsTable() {
                   onClick={() => handleSort('name')}
                   className="h-auto p-0 font-medium hover:bg-transparent"
                 >
-                  <User className="w-4 h-4 mr-2" />
+                  <User className="mr-2 h-4 w-4" />
                   Lead
-                  <ArrowUpDown className="w-3 h-3 ml-2" />
+                  <ArrowUpDown className="ml-2 h-3 w-3" />
                 </Button>
               </TableHead>
-              
+
               <TableHead className="w-[200px]">
                 <Button
                   variant="ghost"
                   onClick={() => handleSort('company')}
                   className="h-auto p-0 font-medium hover:bg-transparent"
                 >
-                  <Building2 className="w-4 h-4 mr-2" />
+                  <Building2 className="mr-2 h-4 w-4" />
                   Company
-                  <ArrowUpDown className="w-3 h-3 ml-2" />
+                  <ArrowUpDown className="ml-2 h-3 w-3" />
                 </Button>
               </TableHead>
-              
+
               <TableHead className="hidden md:table-cell">
-                <Mail className="w-4 h-4 mr-2 inline" />
+                <Mail className="mr-2 inline h-4 w-4" />
                 Email
               </TableHead>
-              
+
               <TableHead className="hidden lg:table-cell">Source</TableHead>
-              
+
               <TableHead className="w-[100px]">
                 <Button
                   variant="ghost"
@@ -114,16 +110,16 @@ export function LeadsTable() {
                   className="h-auto p-0 font-medium hover:bg-transparent"
                 >
                   Score
-                  <ArrowUpDown className="w-3 h-3 ml-2" />
+                  <ArrowUpDown className="ml-2 h-3 w-3" />
                 </Button>
               </TableHead>
-              
+
               <TableHead className="w-[120px]">Status</TableHead>
-              
+
               <TableHead className="w-[80px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
-          
+
           <TableBody>
             {filteredLeads.map((lead) => (
               <TableRow
@@ -139,49 +135,47 @@ export function LeadsTable() {
               >
                 <TableCell className="font-medium">
                   <div>
-                    <div className="font-medium text-foreground">{lead.name}</div>
-                    <div className="text-sm text-muted-foreground md:hidden">
-                      {lead.company}
-                    </div>
+                    <div className="text-foreground font-medium">{lead.name}</div>
+                    <div className="text-muted-foreground text-sm md:hidden">{lead.company}</div>
                   </div>
                 </TableCell>
-                
+
                 <TableCell className="hidden md:table-cell">
                   <div className="flex items-center">
-                    <Building2 className="w-4 h-4 mr-2 text-muted-foreground" />
+                    <Building2 className="text-muted-foreground mr-2 h-4 w-4" />
                     {lead.company}
                   </div>
                 </TableCell>
-                
+
                 <TableCell className="hidden md:table-cell">
                   <div className="flex items-center text-sm">
-                    <Mail className="w-3 h-3 mr-2 text-muted-foreground" />
-                    <span className="truncate max-w-[200px]">{lead.email}</span>
+                    <Mail className="text-muted-foreground mr-2 h-3 w-3" />
+                    <span className="max-w-[200px] truncate">{lead.email}</span>
                   </div>
                 </TableCell>
-                
+
                 <TableCell className="hidden lg:table-cell">
                   <div className="flex items-center text-sm">
                     {sourceConfig[lead.source].icon}
                     <span className="ml-2">{sourceConfig[lead.source].label}</span>
                   </div>
                 </TableCell>
-                
+
                 <TableCell>
                   <div className={cn('text-center font-medium', getScoreColor(lead.score))}>
                     {lead.score}
                   </div>
                 </TableCell>
-                
+
                 <TableCell>
-                  <Badge 
+                  <Badge
                     variant={statusConfig[lead.status].variant}
                     className={cn('text-xs', statusConfig[lead.status].color)}
                   >
                     {statusConfig[lead.status].label}
                   </Badge>
                 </TableCell>
-                
+
                 <TableCell onClick={(e) => e.stopPropagation()}>
                   <Button
                     variant="ghost"
@@ -189,7 +183,7 @@ export function LeadsTable() {
                     onClick={() => selectLead(lead.id)}
                     className="h-8 w-8 p-0"
                   >
-                    <Eye className="w-4 h-4" />
+                    <Eye className="h-4 w-4" />
                     <span className="sr-only">View details</span>
                   </Button>
                 </TableCell>
@@ -200,11 +194,7 @@ export function LeadsTable() {
       </div>
 
       {/* Lead Detail Panel */}
-      <LeadDetailPanel
-        lead={selectedLead}
-        open={!!selectedLead}
-        onClose={clearSelection}
-      />
+      <LeadDetailPanel lead={selectedLead} open={!!selectedLead} onClose={clearSelection} />
     </>
   );
 }

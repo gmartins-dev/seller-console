@@ -20,7 +20,13 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { LoadingOverlay } from '@/components/ui/loading-state';
 import { ConvertLeadDialog } from '@/components/opportunities/convert-lead-dialog';
@@ -117,12 +123,12 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
   };
 
   const sourceConfig = {
-    website: { label: 'Website', icon: <ExternalLink className="w-4 h-4" /> },
-    referral: { label: 'Referral', icon: <User className="w-4 h-4" /> },
-    social: { label: 'Social Media', icon: <ExternalLink className="w-4 h-4" /> },
-    email: { label: 'Email Campaign', icon: <Mail className="w-4 h-4" /> },
-    phone: { label: 'Phone Call', icon: <Phone className="w-4 h-4" /> },
-    other: { label: 'Other', icon: <ExternalLink className="w-4 h-4" /> },
+    website: { label: 'Website', icon: <ExternalLink className="h-4 w-4" /> },
+    referral: { label: 'Referral', icon: <User className="h-4 w-4" /> },
+    social: { label: 'Social Media', icon: <ExternalLink className="h-4 w-4" /> },
+    email: { label: 'Email Campaign', icon: <Mail className="h-4 w-4" /> },
+    phone: { label: 'Phone Call', icon: <Phone className="h-4 w-4" /> },
+    other: { label: 'Other', icon: <ExternalLink className="h-4 w-4" /> },
   };
 
   const getScoreColor = (score: number): string => {
@@ -135,11 +141,11 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
   return (
     <>
       <Sheet open={open} onOpenChange={onClose}>
-        <SheetContent className="w-full sm:max-w-lg overflow-y-auto p-0">
+        <SheetContent className="w-full overflow-y-auto p-0 sm:max-w-lg">
           <LoadingOverlay isLoading={updateLeadMutation.isPending}>
             <SheetHeader className="p-6 pb-4">
               <SheetTitle className="flex items-center gap-2">
-                <User className="w-5 h-5" />
+                <User className="h-5 w-5" />
                 Lead Details
               </SheetTitle>
               <SheetDescription>
@@ -147,13 +153,13 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
               </SheetDescription>
             </SheetHeader>
 
-            <div className="px-6 space-y-6 pb-6">
+            <div className="space-y-6 px-6 pb-6">
               {/* Lead Basic Info */}
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-medium">{lead.name}</h3>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Building2 className="w-4 h-4" />
+                  <div className="text-muted-foreground flex items-center gap-2 text-sm">
+                    <Building2 className="h-4 w-4" />
                     {lead.company}
                   </div>
                 </div>
@@ -161,7 +167,7 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
                 {/* Score and Source */}
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4 text-muted-foreground" />
+                    <TrendingUp className="text-muted-foreground h-4 w-4" />
                     <span className="text-sm">Score:</span>
                     <span className={`font-semibold ${getScoreColor(lead.score)}`}>
                       {lead.score}
@@ -175,9 +181,9 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
                 </div>
 
                 {/* Timestamps */}
-                <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
+                <div className="text-muted-foreground grid grid-cols-2 gap-4 text-sm">
                   <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
+                    <Calendar className="h-4 w-4" />
                     <div>
                       <div>Created</div>
                       <div className="font-medium">
@@ -187,7 +193,7 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
+                    <Calendar className="h-4 w-4" />
                     <div>
                       <div>Updated</div>
                       <div className="font-medium">
@@ -216,17 +222,12 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
                       </Button>
                     ) : (
                       <div className="flex gap-2">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={handleCancel}
-                        >
-                          <X className="w-3 h-3 mr-1" />
+                        <Button type="button" variant="outline" size="sm" onClick={handleCancel}>
+                          <X className="mr-1 h-3 w-3" />
                           Cancel
                         </Button>
                         <Button type="submit" size="sm">
-                          <Save className="w-3 h-3 mr-1" />
+                          <Save className="mr-1 h-3 w-3" />
                           Save
                         </Button>
                       </div>
@@ -241,7 +242,7 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
                         <FormLabel>Email</FormLabel>
                         <FormControl>
                           <div className="flex items-center gap-2">
-                            <Mail className="w-4 h-4 text-muted-foreground" />
+                            <Mail className="text-muted-foreground h-4 w-4" />
                             <Input
                               {...field}
                               disabled={!isEditing}
@@ -300,12 +301,12 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
                   disabled={!canConvert}
                   className="w-full"
                 >
-                  <Target className="w-4 h-4 mr-2" />
+                  <Target className="mr-2 h-4 w-4" />
                   Convert to Opportunity
                 </Button>
 
                 {!canConvert && (
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     Only new, contacted, or qualified leads can be converted to opportunities.
                   </p>
                 )}

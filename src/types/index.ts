@@ -27,7 +27,7 @@ export const OpportunityStageEnum = z.enum([
   'proposal',
   'negotiation',
   'closed_won',
-  'closed_lost'
+  'closed_lost',
 ]);
 
 export const OpportunitySchema = z.object({
@@ -84,12 +84,8 @@ export type OpportunityFormData = z.infer<typeof OpportunityFormSchema>;
 export class AppError extends Error {
   public code?: string;
   public status?: number;
-  
-  constructor(
-    message: string,
-    code?: string,
-    status?: number
-  ) {
+
+  constructor(message: string, code?: string, status?: number) {
     super(message);
     this.name = 'AppError';
     this.code = code;

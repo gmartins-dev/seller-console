@@ -27,7 +27,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     this.setState({ error, errorInfo });
-    
+
     // Log to console in development
     if (process.env.NODE_ENV === 'development') {
       console.error('ErrorBoundary caught an error:', error, errorInfo);
@@ -54,43 +54,42 @@ export class ErrorBoundary extends Component<Props, State> {
 
       // Default error UI
       return (
-        <div className="min-h-screen flex items-center justify-center bg-background">
-          <div className="max-w-md w-full mx-auto p-6">
+        <div className="bg-background flex min-h-screen items-center justify-center">
+          <div className="mx-auto w-full max-w-md p-6">
             <div className="text-center">
-              <div className="flex justify-center mb-4">
-                <div className="rounded-full bg-destructive/10 p-3">
-                  <AlertTriangle className="w-8 h-8 text-destructive" />
+              <div className="mb-4 flex justify-center">
+                <div className="bg-destructive/10 rounded-full p-3">
+                  <AlertTriangle className="text-destructive h-8 w-8" />
                 </div>
               </div>
-              
-              <h1 className="text-2xl font-bold text-foreground mb-2">
-                Something went wrong
-              </h1>
-              
+
+              <h1 className="text-foreground mb-2 text-2xl font-bold">Something went wrong</h1>
+
               <p className="text-muted-foreground mb-6">
-                We encountered an unexpected error. Our team has been notified and is working to fix it.
+                We encountered an unexpected error. Our team has been notified and is working to fix
+                it.
               </p>
 
               {process.env.NODE_ENV === 'development' && this.state.error && (
-                <details className="text-left mb-6 p-4 bg-muted rounded-lg">
-                  <summary className="cursor-pointer text-sm font-medium mb-2">
+                <details className="bg-muted mb-6 rounded-lg p-4 text-left">
+                  <summary className="mb-2 cursor-pointer text-sm font-medium">
                     Error Details (Development)
                   </summary>
-                  <pre className="text-xs text-muted-foreground whitespace-pre-wrap overflow-auto max-h-32">
+                  <pre className="text-muted-foreground max-h-32 overflow-auto text-xs whitespace-pre-wrap">
                     {this.state.error.toString()}
                     {this.state.errorInfo?.componentStack}
                   </pre>
                 </details>
               )}
 
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <div className="flex flex-col justify-center gap-3 sm:flex-row">
                 <Button onClick={this.handleReset} variant="outline">
-                  <RefreshCw className="w-4 h-4 mr-2" />
+                  <RefreshCw className="mr-2 h-4 w-4" />
                   Try Again
                 </Button>
-                
+
                 <Button onClick={this.handleReload}>
-                  <Home className="w-4 h-4 mr-2" />
+                  <Home className="mr-2 h-4 w-4" />
                   Reload Page
                 </Button>
               </div>
@@ -126,28 +125,26 @@ export function useErrorBoundary() {
 }
 
 // Simple error fallback for smaller components
-export function SimpleErrorFallback({ 
-  error, 
-  resetError 
-}: { 
-  error: Error; 
-  resetError: () => void; 
+export function SimpleErrorFallback({
+  error,
+  resetError,
+}: {
+  error: Error;
+  resetError: () => void;
 }) {
   return (
-    <div className="p-4 border border-destructive/20 rounded-lg bg-destructive/5">
-      <div className="flex items-center space-x-2 mb-3">
-        <AlertTriangle className="w-5 h-5 text-destructive" />
-        <h3 className="text-sm font-medium text-destructive">
-          Error loading component
-        </h3>
+    <div className="border-destructive/20 bg-destructive/5 rounded-lg border p-4">
+      <div className="mb-3 flex items-center space-x-2">
+        <AlertTriangle className="text-destructive h-5 w-5" />
+        <h3 className="text-destructive text-sm font-medium">Error loading component</h3>
       </div>
-      
-      <p className="text-sm text-muted-foreground mb-3">
+
+      <p className="text-muted-foreground mb-3 text-sm">
         {error.message || 'An unexpected error occurred.'}
       </p>
-      
+
       <Button onClick={resetError} size="sm" variant="outline">
-        <RefreshCw className="w-3 h-3 mr-1" />
+        <RefreshCw className="mr-1 h-3 w-3" />
         Retry
       </Button>
     </div>

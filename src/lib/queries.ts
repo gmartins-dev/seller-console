@@ -9,7 +9,12 @@ export const queryClient = new QueryClient({
     queries: {
       retry: (failureCount, error) => {
         // Don't retry on client errors (4xx)
-        if (error instanceof AppError && error.status && error.status >= 400 && error.status < 500) {
+        if (
+          error instanceof AppError &&
+          error.status &&
+          error.status >= 400 &&
+          error.status < 500
+        ) {
           return false;
         }
         // Retry up to 3 times for other errors
@@ -105,7 +110,7 @@ export const useUpdateLeadMutation = () => {
 
       // Optimistically update the cache
       updateLead(id, updates);
-      
+
       if (previousLeads) {
         const optimisticLeads = previousLeads.map((lead) =>
           lead.id === id ? { ...lead, ...updates, updatedAt: new Date().toISOString() } : lead
@@ -128,7 +133,7 @@ export const useUpdateLeadMutation = () => {
       if (context?.previousLead) {
         queryClient.setQueryData(queryKeys.lead(id), context.previousLead);
       }
-      
+
       const errorMessage = error instanceof AppError ? error.message : 'Failed to update lead';
       setError(errorMessage);
     },
@@ -152,13 +157,15 @@ export const useCreateOpportunityMutation = () => {
     onSuccess: (opportunity) => {
       // Update store
       addOpportunity(opportunity);
-      
+
       // Update cache
-      const previousOpportunities = queryClient.getQueryData<Opportunity[]>(queryKeys.opportunities) || [];
+      const previousOpportunities =
+        queryClient.getQueryData<Opportunity[]>(queryKeys.opportunities) || [];
       queryClient.setQueryData(queryKeys.opportunities, [...previousOpportunities, opportunity]);
     },
     onError: (error) => {
-      const errorMessage = error instanceof AppError ? error.message : 'Failed to create opportunity';
+      const errorMessage =
+        error instanceof AppError ? error.message : 'Failed to create opportunity';
       setError(errorMessage);
     },
   });
@@ -171,12 +178,12 @@ export const useConvertLeadMutation = () => {
   const setError = useLeadsStore((state) => state.setError);
 
   return useMutation({
-    mutationFn: async ({ 
-      leadId, 
-      opportunityData 
-    }: { 
-      leadId: string; 
-      opportunityData: OpportunityFormData 
+    mutationFn: async ({
+      leadId,
+      opportunityData,
+    }: {
+      leadId: string;
+      opportunityData: OpportunityFormData;
     }) => {
       const response = await opportunitiesApi.convertLeadToOpportunity(leadId, opportunityData);
       return response.data;
@@ -185,11 +192,11 @@ export const useConvertLeadMutation = () => {
       // Update stores
       updateLead(lead.id, { status: lead.status });
       addOpportunity(opportunity);
-      
+
       // Update caches
       queryClient.invalidateQueries({ queryKey: queryKeys.leads });
       queryClient.invalidateQueries({ queryKey: queryKeys.opportunities });
-      
+
       // Update specific lead cache
       queryClient.setQueryData(queryKeys.lead(lead.id), lead);
     },
@@ -203,11 +210,9 @@ export const useConvertLeadMutation = () => {
 // Error handling hook
 export const useErrorHandler = () => {
   const setError = useLeadsStore((state) => state.setError);
-  
+
   const handleError = (error: unknown) => {
-    const errorMessage = error instanceof AppError 
-      ? error.message 
-      : 'An unexpected error occurred';
+    const errorMessage = error instanceof AppError ? error.message : 'An unexpected error occurred';
     setError(errorMessage);
     console.error('Application error:', error);
   };

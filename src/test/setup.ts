@@ -1,24 +1,24 @@
-import '@testing-library/jest-dom'
-import { afterEach, vi } from 'vitest'
-import { cleanup } from '@testing-library/react'
+import '@testing-library/jest-dom';
+import { afterEach, vi } from 'vitest';
+import { cleanup } from '@testing-library/react';
 
 // Mock IntersectionObserver
 const MockIntersectionObserver = vi.fn(() => ({
   disconnect: vi.fn(),
   observe: vi.fn(),
   unobserve: vi.fn(),
-}))
+}));
 
-vi.stubGlobal('IntersectionObserver', MockIntersectionObserver)
+vi.stubGlobal('IntersectionObserver', MockIntersectionObserver);
 
 // Mock ResizeObserver
 const MockResizeObserver = vi.fn(() => ({
   disconnect: vi.fn(),
   observe: vi.fn(),
   unobserve: vi.fn(),
-}))
+}));
 
-vi.stubGlobal('ResizeObserver', MockResizeObserver)
+vi.stubGlobal('ResizeObserver', MockResizeObserver);
 
 // Mock matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -33,9 +33,9 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: () => {},
     dispatchEvent: () => {},
   }),
-})
+});
 
 // Cleanup after each test case
 afterEach(() => {
-  cleanup()
-})
+  cleanup();
+});

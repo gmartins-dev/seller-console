@@ -7,28 +7,28 @@ interface LeadsState {
   leads: Lead[];
   opportunities: Opportunity[];
   selectedLead: Lead | null;
-  
+
   // Filters and UI state
   filters: LeadFilters;
   loadingState: LoadingState;
-  
+
   // Actions
   setLeads: (leads: Lead[]) => void;
   updateLead: (leadId: string, updates: Partial<Lead>) => void;
   setSelectedLead: (lead: Lead | null) => void;
-  
+
   // Opportunities
   addOpportunity: (opportunity: Opportunity) => void;
   setOpportunities: (opportunities: Opportunity[]) => void;
-  
+
   // Filters
   setFilters: (filters: Partial<LeadFilters>) => void;
   resetFilters: () => void;
-  
+
   // Loading and errors
   setLoading: (isLoading: boolean) => void;
   setError: (error: string | null) => void;
-  
+
   // Computed selectors
   getFilteredLeads: () => Lead[];
   getLeadById: (id: string) => Lead | undefined;
@@ -56,51 +56,57 @@ export const useLeadsStore = create<LeadsState>()(
         selectedLead: null,
         filters: defaultFilters,
         loadingState: defaultLoadingState,
-        
+
         // Actions
         setLeads: (leads) => set({ leads }),
-        
-        updateLead: (leadId, updates) => set((state) => ({
-          leads: state.leads.map((lead) =>
-            lead.id === leadId 
-              ? { ...lead, ...updates, updatedAt: new Date().toISOString() }
-              : lead
-          ),
-          selectedLead: state.selectedLead?.id === leadId 
-            ? { ...state.selectedLead, ...updates, updatedAt: new Date().toISOString() }
-            : state.selectedLead,
-        })),
-        
+
+        updateLead: (leadId, updates) =>
+          set((state) => ({
+            leads: state.leads.map((lead) =>
+              lead.id === leadId
+                ? { ...lead, ...updates, updatedAt: new Date().toISOString() }
+                : lead
+            ),
+            selectedLead:
+              state.selectedLead?.id === leadId
+                ? { ...state.selectedLead, ...updates, updatedAt: new Date().toISOString() }
+                : state.selectedLead,
+          })),
+
         setSelectedLead: (lead) => set({ selectedLead: lead }),
-        
+
         // Opportunities
-        addOpportunity: (opportunity) => set((state) => ({
-          opportunities: [...state.opportunities, opportunity],
-        })),
-        
+        addOpportunity: (opportunity) =>
+          set((state) => ({
+            opportunities: [...state.opportunities, opportunity],
+          })),
+
         setOpportunities: (opportunities) => set({ opportunities }),
-        
+
         // Filters
-        setFilters: (newFilters) => set((state) => ({
-          filters: { ...state.filters, ...newFilters },
-        })),
-        
+        setFilters: (newFilters) =>
+          set((state) => ({
+            filters: { ...state.filters, ...newFilters },
+          })),
+
         resetFilters: () => set({ filters: defaultFilters }),
-        
+
         // Loading and errors
-        setLoading: (isLoading) => set((state) => ({
-          loadingState: { ...state.loadingState, isLoading },
-        })),
-        
-        setError: (error) => set((state) => ({
-          loadingState: { ...state.loadingState, error },
-        })),
-        
+        setLoading: (isLoading) =>
+          set((state) => ({
+            loadingState: { ...state.loadingState, isLoading },
+          })),
+
+        setError: (error) =>
+          set((state) => ({
+            loadingState: { ...state.loadingState, error },
+          })),
+
         // Computed selectors
         getFilteredLeads: () => {
           const { leads, filters } = get();
           let filteredLeads = [...leads];
-          
+
           // Search filter
           if (filters.search) {
             const searchTerm = filters.search.toLowerCase();
@@ -110,19 +116,17 @@ export const useLeadsStore = create<LeadsState>()(
                 lead.company.toLowerCase().includes(searchTerm)
             );
           }
-          
+
           // Status filter
           if (filters.status !== 'all') {
-            filteredLeads = filteredLeads.filter(
-              (lead) => lead.status === filters.status
-            );
+            filteredLeads = filteredLeads.filter((lead) => lead.status === filters.status);
           }
-          
+
           // Sort
           filteredLeads.sort((a, b) => {
             let aValue: any;
             let bValue: any;
-            
+
             switch (filters.sortBy) {
               case 'score':
                 aValue = a.score;
@@ -143,17 +147,17 @@ export const useLeadsStore = create<LeadsState>()(
               default:
                 return 0;
             }
-            
+
             if (filters.sortOrder === 'desc') {
               return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
             } else {
               return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
             }
           });
-          
+
           return filteredLeads;
         },
-        
+
         getLeadById: (id) => {
           const { leads } = get();
           return leads.find((lead) => lead.id === id);
@@ -162,7 +166,7 @@ export const useLeadsStore = create<LeadsState>()(
       {
         name: 'leads-storage',
         // Only persist filters and opportunities, not the full leads data
-        partialize: (state) => ({ 
+        partialize: (state) => ({
           filters: state.filters,
           opportunities: state.opportunities,
         }),

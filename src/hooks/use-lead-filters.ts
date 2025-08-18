@@ -3,13 +3,7 @@ import { useLeadsStore } from '@/stores/leads-store';
 import type { Lead, LeadFilters } from '@/types';
 
 export const useLeadFilters = () => {
-  const {
-    filters,
-    setFilters,
-    resetFilters,
-    getFilteredLeads,
-    leads,
-  } = useLeadsStore();
+  const { filters, setFilters, resetFilters, getFilteredLeads, leads } = useLeadsStore();
 
   // Memoized filtered and sorted leads
   const filteredLeads = useMemo(() => {
@@ -20,35 +14,35 @@ export const useLeadFilters = () => {
   const stats = useMemo(() => {
     const totalLeads = leads.length;
     const filteredCount = filteredLeads.length;
-    
-    const statusCounts = leads.reduce((acc, lead) => {
-      acc[lead.status] = (acc[lead.status] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
 
-    const averageScore = leads.length > 0 
-      ? Math.round(leads.reduce((sum, lead) => sum + lead.score, 0) / leads.length)
-      : 0;
+    const statusCounts = leads.reduce(
+      (acc, lead) => {
+        acc[lead.status] = (acc[lead.status] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
-    const highScoreLeads = leads.filter(lead => lead.score >= 80).length;
-    
+    const averageScore =
+      leads.length > 0
+        ? Math.round(leads.reduce((sum, lead) => sum + lead.score, 0) / leads.length)
+        : 0;
+
+    const highScoreLeads = leads.filter((lead) => lead.score >= 80).length;
+
     return {
       total: totalLeads,
       filtered: filteredCount,
       statusCounts,
       averageScore,
       highScoreLeads,
-      conversionRate: totalLeads > 0 
-        ? Math.round(((statusCounts.qualified || 0) / totalLeads) * 100)
-        : 0,
+      conversionRate:
+        totalLeads > 0 ? Math.round(((statusCounts.qualified || 0) / totalLeads) * 100) : 0,
     };
   }, [leads, filteredLeads]);
 
   // Update specific filter
-  const updateFilter = <K extends keyof LeadFilters>(
-    key: K,
-    value: LeadFilters[K]
-  ) => {
+  const updateFilter = <K extends keyof LeadFilters>(key: K, value: LeadFilters[K]) => {
     setFilters({ [key]: value });
   };
 
@@ -57,9 +51,10 @@ export const useLeadFilters = () => {
     searchByName: (query: string) => updateFilter('search', query),
     filterByStatus: (status: LeadFilters['status']) => updateFilter('status', status),
     sortBy: (field: LeadFilters['sortBy'], order?: LeadFilters['sortOrder']) => {
-      setFilters({ 
-        sortBy: field, 
-        sortOrder: order || (filters.sortBy === field && filters.sortOrder === 'desc' ? 'asc' : 'desc')
+      setFilters({
+        sortBy: field,
+        sortOrder:
+          order || (filters.sortBy === field && filters.sortOrder === 'desc' ? 'asc' : 'desc'),
       });
     },
     clearSearch: () => updateFilter('search', ''),
@@ -83,12 +78,12 @@ export const useLeadFilters = () => {
     filteredLeads,
     stats,
     hasActiveFilters,
-    
+
     // Actions
     setFilters,
     updateFilter,
     resetFilters,
-    
+
     // Convenient filter actions
     ...filterActions,
   };
@@ -97,7 +92,7 @@ export const useLeadFilters = () => {
 // Hook for search functionality with debouncing
 export const useLeadSearch = () => {
   const { filters, updateFilter } = useLeadFilters();
-  
+
   const searchLeads = (query: string) => {
     updateFilter('search', query);
   };
@@ -147,16 +142,14 @@ export const useLeadBatchOperations = () => {
   const { leads, setLeads } = useLeadsStore();
 
   const bulkUpdateStatus = (leadIds: string[], status: Lead['status']) => {
-    const updatedLeads = leads.map(lead => 
-      leadIds.includes(lead.id) 
-        ? { ...lead, status, updatedAt: new Date().toISOString() }
-        : lead
+    const updatedLeads = leads.map((lead) =>
+      leadIds.includes(lead.id) ? { ...lead, status, updatedAt: new Date().toISOString() } : lead
     );
     setLeads(updatedLeads);
   };
 
   const bulkDelete = (leadIds: string[]) => {
-    const filteredLeads = leads.filter(lead => !leadIds.includes(lead.id));
+    const filteredLeads = leads.filter((lead) => !leadIds.includes(lead.id));
     setLeads(filteredLeads);
   };
 

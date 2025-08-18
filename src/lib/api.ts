@@ -38,7 +38,7 @@ class ApiService {
   // Leads API
   async getLeads(): Promise<ApiResponse<Lead[]>> {
     await simulateLatency();
-    
+
     if (simulateFailure(0.05)) {
       throw new AppError('Failed to fetch leads', 'FETCH_ERROR', 500);
     }
@@ -52,13 +52,13 @@ class ApiService {
 
   async getLeadById(id: string): Promise<ApiResponse<Lead | null>> {
     await simulateLatency(100, 300);
-    
+
     if (simulateFailure(0.02)) {
       throw new AppError('Failed to fetch lead', 'FETCH_ERROR', 500);
     }
 
     const lead = this.leads.find((l) => l.id === id);
-    
+
     return {
       data: lead || null,
       success: true,
@@ -68,14 +68,14 @@ class ApiService {
 
   async updateLead(id: string, updates: Partial<Lead>): Promise<ApiResponse<Lead>> {
     await simulateLatency(200, 500);
-    
+
     // Simulate validation failure
     if (simulateFailure(0.1)) {
       throw new AppError('Failed to update lead', 'UPDATE_ERROR', 400);
     }
 
     const leadIndex = this.leads.findIndex((l) => l.id === id);
-    
+
     if (leadIndex === -1) {
       throw new AppError('Lead not found', 'NOT_FOUND', 404);
     }
@@ -83,11 +83,11 @@ class ApiService {
     // Validate updates
     const currentLead = this.leads[leadIndex];
     const updatedLead = { ...currentLead, ...updates, updatedAt: new Date().toISOString() };
-    
+
     try {
       const validatedLead = LeadSchema.parse(updatedLead);
       this.leads[leadIndex] = validatedLead;
-      
+
       return {
         data: validatedLead,
         success: true,
@@ -101,7 +101,7 @@ class ApiService {
   // Opportunities API
   async getOpportunities(): Promise<ApiResponse<Opportunity[]>> {
     await simulateLatency();
-    
+
     if (simulateFailure(0.05)) {
       throw new AppError('Failed to fetch opportunities', 'FETCH_ERROR', 500);
     }
@@ -113,9 +113,11 @@ class ApiService {
     };
   }
 
-  async createOpportunity(opportunityData: Omit<Opportunity, 'id' | 'createdAt' | 'updatedAt'>): Promise<ApiResponse<Opportunity>> {
+  async createOpportunity(
+    opportunityData: Omit<Opportunity, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<ApiResponse<Opportunity>> {
     await simulateLatency(300, 700);
-    
+
     // Simulate creation failure
     if (simulateFailure(0.08)) {
       throw new AppError('Failed to create opportunity', 'CREATE_ERROR', 500);
@@ -143,11 +145,11 @@ class ApiService {
   }
 
   async convertLeadToOpportunity(
-    leadId: string, 
+    leadId: string,
     opportunityData: Omit<Opportunity, 'id' | 'leadId' | 'createdAt' | 'updatedAt'>
   ): Promise<ApiResponse<{ lead: Lead; opportunity: Opportunity }>> {
     await simulateLatency(400, 800);
-    
+
     // Simulate conversion failure
     if (simulateFailure(0.1)) {
       throw new AppError('Failed to convert lead to opportunity', 'CONVERSION_ERROR', 500);
@@ -176,7 +178,11 @@ class ApiService {
       this.opportunities.push(validatedOpportunity);
 
       // Update lead status
-      const updatedLead = { ...lead, status: 'qualified' as const, updatedAt: new Date().toISOString() };
+      const updatedLead = {
+        ...lead,
+        status: 'qualified' as const,
+        updatedAt: new Date().toISOString(),
+      };
       const leadIndex = this.leads.findIndex((l) => l.id === leadId);
       this.leads[leadIndex] = updatedLead;
 

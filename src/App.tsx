@@ -11,12 +11,10 @@ function App() {
     <ThemeProvider defaultTheme="light" storageKey="seller-console-theme">
       <ErrorBoundary>
         <QueryClientProvider client={queryClient}>
-          <div className="min-h-screen bg-background">
+          <div className="bg-background min-h-screen">
             <Dashboard />
           </div>
-          {process.env.NODE_ENV === 'development' && (
-            <ReactQueryDevtools initialIsOpen={false} />
-          )}
+          {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
         </QueryClientProvider>
       </ErrorBoundary>
     </ThemeProvider>
