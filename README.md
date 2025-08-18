@@ -3,15 +3,10 @@
 <div align="center">
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
-![React](https://img.shields.io/ba#### 🛠️ **Frontend Core**
-- **⚛️ React 19** - Latest React with concurrent features
-- **📘 TypeScript 5** - Static type checking and enhanced DX
-- **⚡ Vite 7** - Lightning-fast build tool and dev server
-- **🎨 Tailwind CSS 4** - Utility-first CSS frameworkeact-19.1-61DAFB.svg?logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-3178C6.svg?logo=typescript)
-![Vite](https://img.shields.io/badge/Vite-7.1-646CFF.svg?logo=vite)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1-38B2AC.svg?logo=tailwind-css)
-![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000.svg?logo=vercel)
+![React](https://img.shields.io/badge/React-19.x-61DAFB.svg?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6.svg?logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-7.x-646CFF.svg?logo=vite)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-38B2AC.svg?logo=tailwind-css)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 *A modern, professional lead and opportunity management system built with React, TypeScript, and cutting-edge UI frameworks.*
