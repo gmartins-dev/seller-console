@@ -57,7 +57,7 @@ type LeadUpdateFormData = z.infer<typeof leadUpdateSchema>;
 export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [showConvertDialog, setShowConvertDialog] = useState(false);
-  
+
   const updateLeadMutation = useUpdateLeadMutation();
   const { handleError } = useErrorHandler();
 
@@ -135,9 +135,9 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
   return (
     <>
       <Sheet open={open} onOpenChange={onClose}>
-        <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
+        <SheetContent className="w-full sm:max-w-lg overflow-y-auto p-0">
           <LoadingOverlay isLoading={updateLeadMutation.isPending}>
-            <SheetHeader>
+            <SheetHeader className="p-6 pb-4">
               <SheetTitle className="flex items-center gap-2">
                 <User className="w-5 h-5" />
                 Lead Details
@@ -147,7 +147,7 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
               </SheetDescription>
             </SheetHeader>
 
-            <div className="mt-6 space-y-6">
+            <div className="px-6 space-y-6 pb-6">
               {/* Lead Basic Info */}
               <div className="space-y-4">
                 <div>
@@ -167,7 +167,7 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
                       {lead.score}
                     </span>
                   </div>
-                  
+
                   <div className="flex items-center gap-2">
                     {sourceConfig[lead.source].icon}
                     <span className="text-sm">{sourceConfig[lead.source].label}</span>
@@ -185,7 +185,7 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
                     <div>
@@ -294,7 +294,7 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
               {/* Actions */}
               <div className="space-y-3">
                 <h4 className="text-sm font-medium">Actions</h4>
-                
+
                 <Button
                   onClick={() => setShowConvertDialog(true)}
                   disabled={!canConvert}
@@ -303,7 +303,7 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
                   <Target className="w-4 h-4 mr-2" />
                   Convert to Opportunity
                 </Button>
-                
+
                 {!canConvert && (
                   <p className="text-xs text-muted-foreground">
                     Only new, contacted, or qualified leads can be converted to opportunities.
