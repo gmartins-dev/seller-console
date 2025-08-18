@@ -117,4 +117,28 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  button,
+  [role="button"],
+  [type="button"],
+  [type="submit"],
+  [type="reset"],
+  a,
+  label,
+  select,
+  [tabindex="0"],
+  [aria-expanded],
+  [data-state],
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [role="button"]:disabled,
+  [type="button"]:disabled,
+  [type="submit"]:disabled,
+  [type="reset"]:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
 }

@@ -27,6 +27,20 @@ Seller Console is a lightweight yet powerful CRM application designed for sales 
 - **🔄 Real-time State Management** - Powered by Zustand and TanStack Query
 - **🛡️ Type-Safe** - Full TypeScript implementation with Zod validation
 - **🎨 Modern UI** - Built with Shadcn UI and Tailwind CSS
+- **🌙 Dark/Light Mode** - Elegant theme toggle with system preference detection
+
+### 🌙 Theme System
+
+Seller Console features a sophisticated **dark/light mode toggle** that enhances user experience:
+
+- **🎯 One-Click Toggle** - Simple button in the dashboard header
+- **💾 Persistent Preference** - Theme choice saved across browser sessions  
+- **🖥️ System Detection** - Automatically detects OS theme preference on first visit
+- **✨ Smooth Transitions** - Animated icon changes (sun/moon) with CSS transforms
+- **♿ Accessibility** - Screen reader support and keyboard navigation
+- **🎨 Professional Design** - Follows shadcn/ui and Tailwind CSS best practices
+
+The theme system provides a modern, user-friendly experience while maintaining the application's professional appearance in both light and dark modes.
 
 ## ✨ Features
 
@@ -225,7 +239,44 @@ pnpm build
 pnpm preview
 ```
 
-## 📚 Usage Guide
+## �️ Tech Stack
+
+### 🏗️ Core Technologies
+
+- **⚛️ React 19** - Latest React with modern features and optimizations
+- **📘 TypeScript 5.8** - Type-safe development with strict mode
+- **⚡ Vite 7** - Lightning-fast build tool and dev server
+- **🎨 Tailwind CSS 4** - Utility-first CSS framework with JIT compilation
+
+### 🎨 UI & Design
+
+- **🧩 Shadcn/ui** - High-quality, accessible React components
+- **🎯 Radix UI** - Unstyled, accessible UI primitives
+- **🎭 Lucide React** - Beautiful, customizable SVG icons
+- **🌙 Dark Mode** - Elegant theme system with system preference detection
+
+### 📊 State Management
+
+- **🐻 Zustand** - Simple, fast state management with persistence
+- **🔄 TanStack Query** - Powerful data fetching and caching
+- **📝 React Hook Form** - Performant form handling with validation
+- **🛡️ Zod** - Runtime schema validation and type inference
+
+### 🧪 Quality & Testing
+
+- **🔍 Vitest** - Fast, modern test runner
+- **🧪 Testing Library** - Simple and complete testing utilities
+- **📏 ESLint** - Code linting with React and TypeScript rules
+- **✨ Prettier** - Consistent code formatting
+
+### 🔧 Development Tools
+
+- **📦 pnpm** - Fast, disk space efficient package manager
+- **🔥 Hot Module Replacement** - Instant dev feedback
+- **📊 React Query Devtools** - Debug and inspect queries
+- **🎯 TypeScript Strict Mode** - Maximum type safety
+
+## �📚 Usage Guide
 
 ### 🎯 Managing Leads
 

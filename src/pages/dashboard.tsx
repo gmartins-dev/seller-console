@@ -11,6 +11,7 @@ import { OpportunitiesTable } from '@/components/opportunities/opportunities-tab
 import { useLeadsQuery, useOpportunitiesQuery } from '@/lib/queries';
 import { useLeadFilters } from '@/hooks/use-lead-filters';
 import { LoadingState } from '@/components/ui/loading-state';
+import { ModeToggle } from '@/components/mode-toggle';
 
 export function Dashboard() {
   const [activeTab, setActiveTab] = useState('leads');
@@ -151,6 +152,10 @@ export function Dashboard() {
             <p className="text-sm text-muted-foreground">
               Manage your leads and opportunities
             </p>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <ModeToggle />
           </div>
         </header>
 
