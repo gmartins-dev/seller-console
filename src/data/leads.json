@@ -1,0 +1,167 @@
+[
+  {
+    "id": "lead-001",
+    "name": "João Silva",
+    "company": "TechCorp Brasil",
+    "email": "joao.silva@techcorp.com.br",
+    "source": "website",
+    "score": 85,
+    "status": "new",
+    "createdAt": "2025-01-15T10:30:00Z",
+    "updatedAt": "2025-01-15T10:30:00Z"
+  },
+  {
+    "id": "lead-002",
+    "name": "Maria Santos",
+    "company": "Inovação Digital",
+    "email": "maria.santos@inovacao.com",
+    "source": "referral",
+    "score": 92,
+    "status": "contacted",
+    "createdAt": "2025-01-14T15:45:00Z",
+    "updatedAt": "2025-01-16T09:20:00Z"
+  },
+  {
+    "id": "lead-003",
+    "name": "Carlos Oliveira",
+    "company": "StartupXYZ",
+    "email": "carlos@startupxyz.com",
+    "source": "social",
+    "score": 78,
+    "status": "qualified",
+    "createdAt": "2025-01-13T08:15:00Z",
+    "updatedAt": "2025-01-17T14:30:00Z"
+  },
+  {
+    "id": "lead-004",
+    "name": "Ana Costa",
+    "company": "Futuro Tech",
+    "email": "ana.costa@futurotech.com.br",
+    "source": "email",
+    "score": 67,
+    "status": "new",
+    "createdAt": "2025-01-12T11:20:00Z",
+    "updatedAt": "2025-01-12T11:20:00Z"
+  },
+  {
+    "id": "lead-005",
+    "name": "Pedro Rodrigues",
+    "company": "MegaCorp",
+    "email": "pedro.rodrigues@megacorp.com",
+    "source": "phone",
+    "score": 95,
+    "status": "contacted",
+    "createdAt": "2025-01-11T16:10:00Z",
+    "updatedAt": "2025-01-18T10:15:00Z"
+  },
+  {
+    "id": "lead-006",
+    "name": "Luciana Ferreira",
+    "company": "Soluções Pro",
+    "email": "luciana@solucoespro.com.br",
+    "source": "website",
+    "score": 73,
+    "status": "unqualified",
+    "createdAt": "2025-01-10T09:30:00Z",
+    "updatedAt": "2025-01-19T13:45:00Z"
+  },
+  {
+    "id": "lead-007",
+    "name": "Ricardo Lima",
+    "company": "InnovaTech",
+    "email": "ricardo.lima@innovatech.com",
+    "source": "referral",
+    "score": 88,
+    "status": "qualified",
+    "createdAt": "2025-01-09T14:25:00Z",
+    "updatedAt": "2025-01-20T11:30:00Z"
+  },
+  {
+    "id": "lead-008",
+    "name": "Fernanda Alves",
+    "company": "Digital Solutions",
+    "email": "fernanda@digitalsolutions.com.br",
+    "source": "social",
+    "score": 81,
+    "status": "new",
+    "createdAt": "2025-01-08T12:15:00Z",
+    "updatedAt": "2025-01-08T12:15:00Z"
+  },
+  {
+    "id": "lead-009",
+    "name": "Marcos Pereira",
+    "company": "CloudTech",
+    "email": "marcos.pereira@cloudtech.com",
+    "source": "email",
+    "score": 76,
+    "status": "contacted",
+    "createdAt": "2025-01-07T07:40:00Z",
+    "updatedAt": "2025-01-21T15:20:00Z"
+  },
+  {
+    "id": "lead-010",
+    "name": "Patricia Sousa",
+    "company": "SmartBusiness",
+    "email": "patricia@smartbusiness.com.br",
+    "source": "other",
+    "score": 69,
+    "status": "lost",
+    "createdAt": "2025-01-06T13:55:00Z",
+    "updatedAt": "2025-01-22T16:10:00Z"
+  },
+  {
+    "id": "lead-011",
+    "name": "Roberto Martins",
+    "company": "TechAdvance",
+    "email": "roberto@techadvance.com",
+    "source": "website",
+    "score": 90,
+    "status": "qualified",
+    "createdAt": "2025-01-05T10:20:00Z",
+    "updatedAt": "2025-01-23T09:45:00Z"
+  },
+  {
+    "id": "lead-012",
+    "name": "Camila Barbosa",
+    "company": "NextGen",
+    "email": "camila.barbosa@nextgen.com.br",
+    "source": "referral",
+    "score": 84,
+    "status": "new",
+    "createdAt": "2025-01-04T15:30:00Z",
+    "updatedAt": "2025-01-04T15:30:00Z"
+  },
+  {
+    "id": "lead-013",
+    "name": "Alexandre Nunes",
+    "company": "DataCorp",
+    "email": "alexandre@datacorp.com",
+    "source": "phone",
+    "score": 77,
+    "status": "contacted",
+    "createdAt": "2025-01-03T11:45:00Z",
+    "updatedAt": "2025-01-24T14:25:00Z"
+  },
+  {
+    "id": "lead-014",
+    "name": "Juliana Rocha",
+    "company": "AI Systems",
+    "email": "juliana.rocha@aisystems.com.br",
+    "source": "social",
+    "score": 93,
+    "status": "qualified",
+    "createdAt": "2025-01-02T08:10:00Z",
+    "updatedAt": "2025-01-25T12:15:00Z"
+  },
+  {
+    "id": "lead-015",
+    "name": "Felipe Costa",
+    "company": "ModernTech",
+    "email": "felipe@moderntech.com",
+    "source": "email",
+    "score": 82,
+    "status": "new",
+    "createdAt": "2025-01-01T16:20:00Z",
+    "updatedAt": "2025-01-01T16:20:00Z"
+  }
+]
