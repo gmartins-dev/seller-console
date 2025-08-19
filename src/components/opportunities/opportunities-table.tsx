@@ -7,8 +7,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp, DollarSign, Building2, Calendar, Target } from 'lucide-react';
-import { useLeadsStore } from '@/stores/leads-store';
+import { DollarSign, Building2, Calendar, Target, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import { useOpportunityFilters } from '@/hooks/use-opportunity-filters';
 import { cn } from '@/lib/utils';
 import type { OpportunityStage } from '@/types';
 
@@ -55,9 +55,21 @@ const formatDate = (dateString: string | undefined): string => {
 };
 
 export function OpportunitiesTable() {
-  const opportunities = useLeadsStore((state) => state.opportunities);
+  const { filteredOpportunities, stats, filters, sortBy } = useOpportunityFilters();
 
-  if (opportunities.length === 0) {
+  // Helper function to get sort icon
+  const getSortIcon = (column: string) => {
+    if (filters.sortBy !== column) {
+      return <ArrowUpDown className="ml-2 h-4 w-4 opacity-50" />;
+    }
+    return filters.sortOrder === 'desc' ? (
+      <ArrowDown className="ml-2 h-4 w-4" />
+    ) : (
+      <ArrowUp className="ml-2 h-4 w-4" />
+    );
+  };
+
+  if (filteredOpportunities.length === 0) {
     return (
       <div className="py-12 text-center">
         <div className="mb-4 flex justify-center">
@@ -65,90 +77,84 @@ export function OpportunitiesTable() {
             <Target className="text-muted-foreground h-8 w-8" />
           </div>
         </div>
-        <h3 className="text-foreground mb-2 text-lg font-medium">No opportunities yet</h3>
+        <h3 className="text-foreground mb-2 text-lg font-medium">
+          {stats.total === 0 ? 'No opportunities yet' : 'No opportunities match your filters'}
+        </h3>
         <p className="text-muted-foreground">
-          Convert some qualified leads to create your first opportunities.
+          {stats.total === 0 
+            ? 'Convert some qualified leads to create your first opportunities.'
+            : 'Try adjusting your search or filters to find what you\'re looking for.'
+          }
         </p>
       </div>
     );
   }
 
-  // Calculate totals
-  const totalValue = opportunities.reduce((sum, opp) => sum + (opp.amount || 0), 0);
-  const wonOpportunities = opportunities.filter((opp) => opp.stage === 'closed_won');
-  const wonValue = wonOpportunities.reduce((sum, opp) => sum + (opp.amount || 0), 0);
-
   return (
     <div className="space-y-4">
-      {/* Summary Stats */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="bg-card rounded-lg border p-4">
-          <div className="mb-2 flex items-center gap-2">
-            <Target className="h-4 w-4 text-blue-600" />
-            <span className="text-sm font-medium">Total Opportunities</span>
-          </div>
-          <div className="text-2xl font-bold">{opportunities.length}</div>
-        </div>
-
-        <div className="bg-card rounded-lg border p-4">
-          <div className="mb-2 flex items-center gap-2">
-            <DollarSign className="h-4 w-4 text-green-600" />
-            <span className="text-sm font-medium">Pipeline Value</span>
-          </div>
-          <div className="text-2xl font-bold">{formatCurrency(totalValue)}</div>
-        </div>
-
-        <div className="bg-card rounded-lg border p-4">
-          <div className="mb-2 flex items-center gap-2">
-            <TrendingUp className="h-4 w-4 text-purple-600" />
-            <span className="text-sm font-medium">Won Value</span>
-          </div>
-          <div className="text-2xl font-bold">{formatCurrency(wonValue)}</div>
-          <div className="text-muted-foreground text-xs">
-            {wonOpportunities.length} opportunities
-          </div>
-        </div>
-      </div>
-
       {/* Opportunities Table */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[250px]">
-                <div className="flex items-center gap-2">
+                <button 
+                  className="flex items-center gap-2 hover:text-foreground"
+                  onClick={() => sortBy('name')}
+                >
                   <Target className="h-4 w-4" />
                   Opportunity
-                </div>
+                  {getSortIcon('name')}
+                </button>
               </TableHead>
 
               <TableHead className="hidden md:table-cell">
-                <div className="flex items-center gap-2">
+                <button 
+                  className="flex items-center gap-2 hover:text-foreground"
+                  onClick={() => sortBy('accountName')}
+                >
                   <Building2 className="h-4 w-4" />
                   Account
-                </div>
+                  {getSortIcon('accountName')}
+                </button>
               </TableHead>
 
-              <TableHead className="w-[120px]">Stage</TableHead>
+              <TableHead className="w-[120px]">
+                <button 
+                  className="flex items-center gap-2 hover:text-foreground"
+                  onClick={() => sortBy('stage')}
+                >
+                  Stage
+                  {getSortIcon('stage')}
+                </button>
+              </TableHead>
 
               <TableHead className="w-[120px] text-right">
-                <div className="flex items-center justify-end gap-2">
+                <button 
+                  className="flex items-center justify-end gap-2 hover:text-foreground ml-auto"
+                  onClick={() => sortBy('amount')}
+                >
                   <DollarSign className="h-4 w-4" />
                   Amount
-                </div>
+                  {getSortIcon('amount')}
+                </button>
               </TableHead>
 
               <TableHead className="hidden w-[120px] lg:table-cell">
-                <div className="flex items-center gap-2">
+                <button 
+                  className="flex items-center gap-2 hover:text-foreground"
+                  onClick={() => sortBy('createdAt')}
+                >
                   <Calendar className="h-4 w-4" />
                   Created
-                </div>
+                  {getSortIcon('createdAt')}
+                </button>
               </TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {opportunities.map((opportunity) => (
+            {filteredOpportunities.map((opportunity) => (
               <TableRow key={opportunity.id} className="hover:bg-muted/50">
                 <TableCell>
                   <div>
@@ -188,26 +194,6 @@ export function OpportunitiesTable() {
             ))}
           </TableBody>
         </Table>
-      </div>
-
-      {/* Stage Distribution */}
-      <div className="bg-card rounded-lg border p-4">
-        <h4 className="mb-3 text-sm font-medium">Stage Distribution</h4>
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-6">
-          {Object.entries(stageConfig).map(([stage, config]) => {
-            const count = opportunities.filter((opp) => opp.stage === stage).length;
-            const percentage =
-              opportunities.length > 0 ? Math.round((count / opportunities.length) * 100) : 0;
-
-            return (
-              <div key={stage} className="rounded border p-2 text-center">
-                <div className="text-lg font-bold">{count}</div>
-                <div className="text-muted-foreground mb-1 text-xs">{config.label}</div>
-                <div className="text-muted-foreground text-xs">{percentage}%</div>
-              </div>
-            );
-          })}
-        </div>
       </div>
     </div>
   );

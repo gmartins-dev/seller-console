@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import type { Lead, Opportunity, LeadFilters, LoadingState } from '@/types';
+import type { Lead, Opportunity, LeadFilters, OpportunityFilters, LoadingState } from '@/types';
 
 interface LeadsState {
   // Data
@@ -10,6 +10,7 @@ interface LeadsState {
 
   // Filters and UI state
   filters: LeadFilters;
+  opportunityFilters: OpportunityFilters;
   loadingState: LoadingState;
 
   // Actions
@@ -24,6 +25,8 @@ interface LeadsState {
   // Filters
   setFilters: (filters: Partial<LeadFilters>) => void;
   resetFilters: () => void;
+  setOpportunityFilters: (filters: Partial<OpportunityFilters>) => void;
+  resetOpportunityFilters: () => void;
 
   // Loading and errors
   setLoading: (isLoading: boolean) => void;
@@ -37,6 +40,13 @@ const defaultFilters: LeadFilters = {
   search: '',
   status: [],
   sortBy: 'score',
+  sortOrder: 'desc',
+};
+
+const defaultOpportunityFilters: OpportunityFilters = {
+  search: '',
+  stage: [],
+  sortBy: 'createdAt',
   sortOrder: 'desc',
 };
 
@@ -54,6 +64,7 @@ export const useLeadsStore = create<LeadsState>()(
         opportunities: [],
         selectedLead: null,
         filters: defaultFilters,
+        opportunityFilters: defaultOpportunityFilters,
         loadingState: defaultLoadingState,
 
         // Actions
@@ -89,6 +100,13 @@ export const useLeadsStore = create<LeadsState>()(
           })),
 
         resetFilters: () => set({ filters: defaultFilters }),
+
+        setOpportunityFilters: (newFilters) =>
+          set((state) => ({
+            opportunityFilters: { ...state.opportunityFilters, ...newFilters },
+          })),
+
+        resetOpportunityFilters: () => set({ opportunityFilters: defaultOpportunityFilters }),
 
         // Loading and errors
         setLoading: (isLoading) =>

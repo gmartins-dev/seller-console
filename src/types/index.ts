@@ -59,6 +59,13 @@ export interface LeadFilters {
   sortOrder: 'asc' | 'desc';
 }
 
+export interface OpportunityFilters {
+  search: string;
+  stage: OpportunityStage[];
+  sortBy: 'name' | 'stage' | 'amount' | 'accountName' | 'createdAt';
+  sortOrder: 'asc' | 'desc';
+}
+
 // Form types
 export const LeadFormSchema = LeadSchema.pick({
   name: true,

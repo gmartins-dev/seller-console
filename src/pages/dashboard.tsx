@@ -8,6 +8,9 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { LeadsTable } from '@/components/leads/leads-table';
 import { LeadsFilterBar } from '@/components/leads/leads-filter-bar';
 import { OpportunitiesTable } from '@/components/opportunities/opportunities-table';
+import { OpportunityFilterBar } from '@/components/opportunities/opportunity-filter-bar';
+import { OpportunitySummaryCards } from '@/components/opportunities/opportunity-summary-cards';
+import { OpportunityStageDistribution } from '@/components/opportunities/opportunity-stage-distribution';
 import { useLeadsQuery, useOpportunitiesQuery } from '@/lib/queries';
 import { useLeadFilters } from '@/hooks/use-lead-filters';
 import { LoadingState } from '@/components/ui/loading-state';
@@ -234,7 +237,12 @@ export function Dashboard() {
                     emptyMessage="No opportunities yet"
                     emptyDescription="Convert some leads to create your first opportunities."
                   >
-                    <OpportunitiesTable />
+                    <div className="space-y-6">
+                      <OpportunityFilterBar />
+                      <OpportunitiesTable />
+                      <OpportunityStageDistribution />
+                      <OpportunitySummaryCards />
+                    </div>
                   </LoadingState>
                 </CardContent>
               </Card>
