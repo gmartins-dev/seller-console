@@ -1,14 +1,68 @@
 import { useMemo } from 'react';
 import { useLeadsStore } from '@/stores/leads-store';
-import type { Lead, LeadFilters } from '@/types';
+import type { Lead, LeadFilters, LeadStatus } from '@/types';
 
 export const useLeadFilters = () => {
-  const { filters, setFilters, resetFilters, getFilteredLeads, leads } = useLeadsStore();
+  const { filters, setFilters, resetFilters, leads } = useLeadsStore();
 
   // Memoized filtered and sorted leads
   const filteredLeads = useMemo(() => {
-    return getFilteredLeads();
-  }, [getFilteredLeads]);
+    let result = [...leads];
+
+    // Search filter
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      result = result.filter(
+        (lead) =>
+          lead.name.toLowerCase().includes(searchTerm) ||
+          lead.company.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    // Status filter
+    if (filters.status.length > 0) {
+      result = result.filter((lead) => filters.status.includes(lead.status));
+    }
+
+    // Sort
+    result.sort((a, b) => {
+      let aValue: any;
+      let bValue: any;
+
+      switch (filters.sortBy) {
+        case 'score':
+          aValue = a.score;
+          bValue = b.score;
+          break;
+        case 'name':
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+          break;
+        case 'company':
+          aValue = a.company.toLowerCase();
+          bValue = b.company.toLowerCase();
+          break;
+        case 'status':
+          aValue = a.status;
+          bValue = b.status;
+          break;
+        case 'createdAt':
+          aValue = new Date(a.createdAt || 0);
+          bValue = new Date(b.createdAt || 0);
+          break;
+        default:
+          return 0;
+      }
+
+      if (filters.sortOrder === 'desc') {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      } else {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      }
+    });
+
+    return result;
+  }, [leads, filters]);
 
   // Statistics
   const stats = useMemo(() => {
@@ -49,7 +103,21 @@ export const useLeadFilters = () => {
   // Predefined filter actions
   const filterActions = {
     searchByName: (query: string) => updateFilter('search', query),
-    filterByStatus: (status: LeadFilters['status']) => updateFilter('status', status),
+    addStatusFilter: (status: LeadStatus) => {
+      if (!filters.status.includes(status)) {
+        updateFilter('status', [...filters.status, status]);
+      }
+    },
+    removeStatusFilter: (status: LeadStatus) => {
+      updateFilter('status', filters.status.filter(s => s !== status));
+    },
+    toggleStatusFilter: (status: LeadStatus) => {
+      if (filters.status.includes(status)) {
+        updateFilter('status', filters.status.filter(s => s !== status));
+      } else {
+        updateFilter('status', [...filters.status, status]);
+      }
+    },
     sortBy: (field: LeadFilters['sortBy'], order?: LeadFilters['sortOrder']) => {
       setFilters({
         sortBy: field,
@@ -58,7 +126,7 @@ export const useLeadFilters = () => {
       });
     },
     clearSearch: () => updateFilter('search', ''),
-    clearStatusFilter: () => updateFilter('status', 'all'),
+    clearStatusFilter: () => updateFilter('status', []),
     reset: resetFilters,
   };
 
@@ -66,7 +134,7 @@ export const useLeadFilters = () => {
   const hasActiveFilters = useMemo(() => {
     return (
       filters.search !== '' ||
-      filters.status !== 'all' ||
+      filters.status.length > 0 ||
       filters.sortBy !== 'score' ||
       filters.sortOrder !== 'desc'
     );

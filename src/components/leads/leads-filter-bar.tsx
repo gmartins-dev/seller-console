@@ -1,4 +1,4 @@
-import { Search, Filter, SortAsc, SortDesc, X } from 'lucide-react';
+import { Search, Filter, SortAsc, SortDesc, X, ChevronDown } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -9,6 +9,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
 import { useLeadFilters } from '@/hooks/use-lead-filters';
 import type { LeadStatus } from '@/types';
 
@@ -18,7 +26,8 @@ export function LeadsFilterBar() {
     stats,
     hasActiveFilters,
     searchByName,
-    filterByStatus,
+    toggleStatusFilter,
+    removeStatusFilter,
     sortBy,
     clearSearch,
     clearStatusFilter,
@@ -26,18 +35,18 @@ export function LeadsFilterBar() {
   } = useLeadFilters();
 
   const statusOptions = [
-    { value: 'all', label: 'All Status', count: stats.total },
-    { value: 'new', label: 'New', count: stats.statusCounts.new || 0 },
-    { value: 'contacted', label: 'Contacted', count: stats.statusCounts.contacted || 0 },
-    { value: 'qualified', label: 'Qualified', count: stats.statusCounts.qualified || 0 },
-    { value: 'unqualified', label: 'Unqualified', count: stats.statusCounts.unqualified || 0 },
-    { value: 'lost', label: 'Lost', count: stats.statusCounts.lost || 0 },
+    { value: 'new' as LeadStatus, label: 'New', count: stats.statusCounts.new || 0 },
+    { value: 'contacted' as LeadStatus, label: 'Contacted', count: stats.statusCounts.contacted || 0 },
+    { value: 'qualified' as LeadStatus, label: 'Qualified', count: stats.statusCounts.qualified || 0 },
+    { value: 'unqualified' as LeadStatus, label: 'Unqualified', count: stats.statusCounts.unqualified || 0 },
+    { value: 'lost' as LeadStatus, label: 'Lost', count: stats.statusCounts.lost || 0 },
   ];
 
   const sortOptions = [
     { value: 'score', label: 'Score' },
     { value: 'name', label: 'Name' },
     { value: 'company', label: 'Company' },
+    { value: 'status', label: 'Status' },
     { value: 'createdAt', label: 'Created' },
   ];
 
@@ -68,27 +77,51 @@ export function LeadsFilterBar() {
 
         {/* Status Filter */}
         <div className="w-full sm:w-48">
-          <Select
-            value={filters.status}
-            onValueChange={(value) => filterByStatus(value as LeadStatus | 'all')}
-          >
-            <SelectTrigger>
-              <Filter className="mr-2 h-4 w-4" />
-              <SelectValue placeholder="Filter by status" />
-            </SelectTrigger>
-            <SelectContent>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="w-full justify-between">
+                <div className="flex items-center">
+                  <Filter className="mr-2 h-4 w-4" />
+                  {filters.status.length === 0 
+                    ? 'Filter by status' 
+                    : `${filters.status.length} status${filters.status.length > 1 ? 'es' : ''} selected`
+                  }
+                </div>
+                <ChevronDown className="h-4 w-4 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="start">
+              <DropdownMenuLabel>Filter by Status</DropdownMenuLabel>
+              <DropdownMenuSeparator />
               {statusOptions.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
+                <DropdownMenuCheckboxItem
+                  key={option.value}
+                  checked={filters.status.includes(option.value)}
+                  onCheckedChange={() => toggleStatusFilter(option.value)}
+                >
                   <div className="flex w-full items-center justify-between">
                     <span>{option.label}</span>
                     <Badge variant="secondary" className="ml-2">
                       {option.count}
                     </Badge>
                   </div>
-                </SelectItem>
+                </DropdownMenuCheckboxItem>
               ))}
-            </SelectContent>
-          </Select>
+              {filters.status.length > 0 && (
+                <>
+                  <DropdownMenuSeparator />
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={clearStatusFilter}
+                    className="w-full justify-center"
+                  >
+                    Clear all status filters
+                  </Button>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {/* Sort */}
@@ -137,19 +170,21 @@ export function LeadsFilterBar() {
                 </Badge>
               )}
 
-              {filters.status !== 'all' && (
-                <Badge variant="secondary" className="gap-1">
-                  Status: {filters.status}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={clearStatusFilter}
-                    className="h-4 w-4 p-0 hover:bg-transparent"
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </Badge>
-              )}
+              {filters.status.length > 0 && 
+                filters.status.map((status) => (
+                  <Badge key={status} variant="secondary" className="gap-1">
+                    Status: {status}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeStatusFilter(status)}
+                      className="h-4 w-4 p-0 hover:bg-transparent"
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </Badge>
+                ))
+              }
 
               <Button variant="ghost" size="sm" onClick={reset}>
                 Clear all

@@ -30,13 +30,12 @@ interface LeadsState {
   setError: (error: string | null) => void;
 
   // Computed selectors
-  getFilteredLeads: () => Lead[];
   getLeadById: (id: string) => Lead | undefined;
 }
 
 const defaultFilters: LeadFilters = {
   search: '',
-  status: 'all',
+  status: [],
   sortBy: 'score',
   sortOrder: 'desc',
 };
@@ -103,61 +102,6 @@ export const useLeadsStore = create<LeadsState>()(
           })),
 
         // Computed selectors
-        getFilteredLeads: () => {
-          const { leads, filters } = get();
-          let filteredLeads = [...leads];
-
-          // Search filter
-          if (filters.search) {
-            const searchTerm = filters.search.toLowerCase();
-            filteredLeads = filteredLeads.filter(
-              (lead) =>
-                lead.name.toLowerCase().includes(searchTerm) ||
-                lead.company.toLowerCase().includes(searchTerm)
-            );
-          }
-
-          // Status filter
-          if (filters.status !== 'all') {
-            filteredLeads = filteredLeads.filter((lead) => lead.status === filters.status);
-          }
-
-          // Sort
-          filteredLeads.sort((a, b) => {
-            let aValue: any;
-            let bValue: any;
-
-            switch (filters.sortBy) {
-              case 'score':
-                aValue = a.score;
-                bValue = b.score;
-                break;
-              case 'name':
-                aValue = a.name.toLowerCase();
-                bValue = b.name.toLowerCase();
-                break;
-              case 'company':
-                aValue = a.company.toLowerCase();
-                bValue = b.company.toLowerCase();
-                break;
-              case 'createdAt':
-                aValue = new Date(a.createdAt || 0);
-                bValue = new Date(b.createdAt || 0);
-                break;
-              default:
-                return 0;
-            }
-
-            if (filters.sortOrder === 'desc') {
-              return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-            } else {
-              return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-            }
-          });
-
-          return filteredLeads;
-        },
-
         getLeadById: (id) => {
           const { leads } = get();
           return leads.find((lead) => lead.id === id);

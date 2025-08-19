@@ -54,8 +54,8 @@ export interface ApiResponse<T> {
 // Filter and sort types
 export interface LeadFilters {
   search: string;
-  status: LeadStatus | 'all';
-  sortBy: 'score' | 'name' | 'company' | 'createdAt';
+  status: LeadStatus[];
+  sortBy: 'score' | 'name' | 'company' | 'status' | 'createdAt';
   sortOrder: 'asc' | 'desc';
 }
 

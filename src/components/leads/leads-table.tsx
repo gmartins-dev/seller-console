@@ -46,7 +46,7 @@ const getScoreColor = (score: number): string => {
 };
 
 export function LeadsTable() {
-  const { filteredLeads, sortBy } = useLeadFilters();
+  const { filteredLeads, filters, sortBy } = useLeadFilters();
   const { selectedLead, selectLead, clearSelection, isSelected } = useLeadSelection();
   const [hoveredRow, setHoveredRow] = useState<string | null>(null);
 
@@ -56,6 +56,17 @@ export function LeadsTable() {
 
   const handleSort = (field: 'score' | 'name' | 'company' | 'createdAt') => {
     sortBy(field);
+  };
+
+  const getSortIcon = (field: string) => {
+    if (filters.sortBy !== field) {
+      return <ArrowUpDown className="ml-2 h-3 w-3 opacity-50" />;
+    }
+    return filters.sortOrder === 'desc' ? (
+      <ArrowUpDown className="ml-2 h-3 w-3 rotate-180 transition-transform" />
+    ) : (
+      <ArrowUpDown className="ml-2 h-3 w-3 transition-transform" />
+    );
   };
 
   if (filteredLeads.length === 0) {
@@ -80,7 +91,7 @@ export function LeadsTable() {
                 >
                   <User className="mr-2 h-4 w-4" />
                   Lead
-                  <ArrowUpDown className="ml-2 h-3 w-3" />
+                  {getSortIcon('name')}
                 </Button>
               </TableHead>
 
@@ -92,7 +103,7 @@ export function LeadsTable() {
                 >
                   <Building2 className="mr-2 h-4 w-4" />
                   Company
-                  <ArrowUpDown className="ml-2 h-3 w-3" />
+                  {getSortIcon('company')}
                 </Button>
               </TableHead>
 
@@ -110,7 +121,7 @@ export function LeadsTable() {
                   className="h-auto p-0 font-medium hover:bg-transparent"
                 >
                   Score
-                  <ArrowUpDown className="ml-2 h-3 w-3" />
+                  {getSortIcon('score')}
                 </Button>
               </TableHead>
 
