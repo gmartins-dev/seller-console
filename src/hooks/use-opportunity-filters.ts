@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useLeadsStore } from '@/stores/leads-store';
 import type { OpportunityFilters, OpportunityStage } from '@/types';
 
@@ -35,8 +35,8 @@ export const useOpportunityFilters = () => {
 
     // Sort
     result.sort((a, b) => {
-      let aValue: any;
-      let bValue: any;
+      let aValue: string | number | Date;
+      let bValue: string | number | Date;
 
       switch (filters.sortBy) {
         case 'name':
@@ -76,9 +76,9 @@ export const useOpportunityFilters = () => {
   }, [opportunities, filters]);
 
   // Reset to page 1 when filters change
-  useMemo(() => {
+  useEffect(() => {
     setCurrentPage(1);
-  }, [filters.search, filters.stage, filters.sortBy, filters.sortOrder]);
+  }, [filters]);
 
   // Paginated opportunities
   const totalPages = Math.ceil(filteredOpportunities.length / itemsPerPage);

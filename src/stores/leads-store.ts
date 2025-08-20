@@ -156,7 +156,7 @@ export const useLeadsStore = create<LeadsState>()(
         },
         // Versioning for data migration
         version: 2, // Incremented to force reload of data
-        migrate: (persistedState: any, version: number) => {
+        migrate: (persistedState: unknown, version: number) => {
           if (version < 2) {
             // Clear old data and force reload from API
             return undefined;

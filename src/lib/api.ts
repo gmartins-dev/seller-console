@@ -136,7 +136,7 @@ class ApiService {
         success: true,
         message: 'Lead updated successfully',
       };
-    } catch (error) {
+    } catch {
       throw new AppError('Invalid lead data', 'VALIDATION_ERROR', 400);
     }
   }
@@ -185,7 +185,7 @@ class ApiService {
         success: true,
         message: 'Opportunity created successfully',
       };
-    } catch (error) {
+    } catch {
       throw new AppError('Invalid opportunity data', 'VALIDATION_ERROR', 400);
     }
   }
@@ -241,7 +241,7 @@ class ApiService {
         success: true,
         message: 'Lead converted to opportunity successfully',
       };
-    } catch (error) {
+    } catch {
       throw new AppError('Invalid data during conversion', 'VALIDATION_ERROR', 400);
     }
   }
@@ -302,7 +302,7 @@ class ApiService {
       // Persist to storage
       this.saveToStorage(this.STORAGE_KEYS.LEADS, this.leads);
       this.saveToStorage(this.STORAGE_KEYS.OPPORTUNITIES, this.opportunities);
-    } catch (error) {
+    } catch {
       throw new AppError('Invalid import data format', 'VALIDATION_ERROR', 400);
     }
   }

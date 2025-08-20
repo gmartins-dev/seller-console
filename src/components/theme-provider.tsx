@@ -35,7 +35,7 @@ export function ThemeProvider({
 
       const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       return systemPrefersDark ? 'dark' : defaultTheme;
-    } catch (e) {
+    } catch {
       return defaultTheme;
     }
   });
@@ -53,8 +53,8 @@ export function ThemeProvider({
         const newTheme = prevTheme === 'light' ? 'dark' : 'light';
         try {
           localStorage.setItem(storageKey, newTheme);
-        } catch (e) {
-          console.error('Failed to set theme in localStorage', e);
+        } catch (error) {
+          console.error('Failed to set theme in localStorage', error);
         }
         return newTheme;
       });

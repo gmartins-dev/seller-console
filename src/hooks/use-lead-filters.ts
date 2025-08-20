@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useLeadsStore } from '@/stores/leads-store';
 import type { Lead, LeadFilters, LeadStatus } from '@/types';
 
@@ -30,8 +30,8 @@ export const useLeadFilters = () => {
 
     // Sort
     result.sort((a, b) => {
-      let aValue: any;
-      let bValue: any;
+      let aValue: string | number | Date;
+      let bValue: string | number | Date;
 
       switch (filters.sortBy) {
         case 'score':
@@ -69,9 +69,9 @@ export const useLeadFilters = () => {
   }, [leads, filters]);
 
   // Reset to page 1 when filters change
-  useMemo(() => {
+  useEffect(() => {
     setCurrentPage(1);
-  }, [filters.search, filters.status, filters.sortBy, filters.sortOrder]);
+  }, [filters]);
 
   // Paginated leads
   const totalPages = Math.ceil(filteredLeads.length / itemsPerPage);
