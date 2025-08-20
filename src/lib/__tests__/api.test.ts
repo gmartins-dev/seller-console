@@ -1,5 +1,16 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, beforeAll, afterAll, vi } from 'vitest';
 import { apiService, leadsApi } from '../api';
+
+// Mock Math.random to disable random failures in tests
+const originalMathRandom = Math.random;
+beforeAll(() => {
+  // Always return 0.99 to ensure Math.random() < failureRate is always false
+  Math.random = vi.fn(() => 0.99);
+});
+
+afterAll(() => {
+  Math.random = originalMathRandom;
+});
 
 // Mock the JSON data
 vi.mock('@/data/leads.json', () => ({

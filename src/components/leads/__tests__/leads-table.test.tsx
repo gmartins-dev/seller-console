@@ -49,6 +49,22 @@ vi.mock('@/hooks/use-lead-filters', () => ({
   }),
 }));
 
+// Mock the store to prevent real data loading
+vi.mock('@/stores/leads-store', () => ({
+  useLeadsStore: () => ({
+    leads: mockLeads,
+    opportunities: [],
+    filters: {
+      search: '',
+      status: [],
+      sortBy: 'score',
+      sortOrder: 'desc',
+    },
+    setFilters: vi.fn(),
+    resetFilters: vi.fn(),
+  }),
+}));
+
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -68,10 +84,12 @@ describe('LeadsTable', () => {
       </TestWrapper>
     );
 
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
-    expect(screen.getAllByText('TechCorp')).toHaveLength(2); // Desktop + mobile view
-    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
-    expect(screen.getAllByText('DataCorp')).toHaveLength(2); // Desktop + mobile view
+    // Test that specific leads from mock data are present
+    // TechCorp appears 3 times: mobile card, desktop table, mobile table fallback
+    expect(screen.getAllByText('John Doe')).toHaveLength(2); // Mobile card + desktop table
+    expect(screen.getAllByText('TechCorp', { exact: true })).toHaveLength(3); // Mobile card + desktop table + mobile table fallback
+    expect(screen.getAllByText('Jane Smith')).toHaveLength(2); // Mobile card + desktop table
+    expect(screen.getAllByText('DataCorp')).toHaveLength(3); // Mobile card + desktop table + mobile table fallback
   });
 
   it('displays correct status badges', () => {
@@ -81,8 +99,9 @@ describe('LeadsTable', () => {
       </TestWrapper>
     );
 
-    expect(screen.getByText('Qualified')).toBeInTheDocument();
-    expect(screen.getByText('New')).toBeInTheDocument();
+    // Status badges appear in both mobile and desktop views
+    expect(screen.getAllByText('Qualified')).toHaveLength(2); // Mobile card + desktop table
+    expect(screen.getAllByText('New')).toHaveLength(2); // Mobile card + desktop table
   });
 
   it('shows score values', () => {
