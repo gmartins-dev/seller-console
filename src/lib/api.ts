@@ -16,22 +16,62 @@ const simulateFailure = (failureRate = 0.1): boolean => {
 class ApiService {
   private leads: Lead[] = [];
   private opportunities: Opportunity[] = [];
+  private readonly STORAGE_KEYS = {
+    LEADS: 'api-leads-data',
+    OPPORTUNITIES: 'api-opportunities-data',
+    LAST_SYNC: 'api-last-sync',
+  };
 
   constructor() {
-    // Initialize with mock data
+    // Initialize with persisted data or fallback to mock data
     this.initializeData();
   }
 
   private initializeData(): void {
     try {
-      // Validate and parse leads data
-      this.leads = leadsData.map((lead) => {
-        const parsed = LeadSchema.parse(lead);
-        return parsed;
-      });
+      // Try to load from localStorage first
+      const persistedLeads = this.loadFromStorage<Lead[]>(this.STORAGE_KEYS.LEADS);
+      const persistedOpportunities = this.loadFromStorage<Opportunity[]>(this.STORAGE_KEYS.OPPORTUNITIES);
+      
+      if (persistedLeads && persistedLeads.length > 0) {
+        this.leads = persistedLeads.map(lead => LeadSchema.parse(lead));
+      } else {
+        // Fallback to mock data
+        this.leads = leadsData.map((lead) => LeadSchema.parse(lead));
+        this.saveToStorage(this.STORAGE_KEYS.LEADS, this.leads);
+      }
+
+      if (persistedOpportunities && persistedOpportunities.length > 0) {
+        this.opportunities = persistedOpportunities.map(opp => OpportunitySchema.parse(opp));
+      } else {
+        this.opportunities = [];
+      }
+
+      // Update last sync timestamp
+      this.saveToStorage(this.STORAGE_KEYS.LAST_SYNC, new Date().toISOString());
+      
     } catch (error) {
-      console.error('Failed to initialize leads data:', error);
-      this.leads = [];
+      console.error('Failed to initialize data:', error);
+      // Fallback to mock data
+      this.leads = leadsData.map((lead) => LeadSchema.parse(lead));
+      this.opportunities = [];
+    }
+  }
+
+  private loadFromStorage<T>(key: string): T | null {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private saveToStorage<T>(key: string, data: T): void {
+    try {
+      localStorage.setItem(key, JSON.stringify(data));
+    } catch (error) {
+      console.warn(`Failed to save ${key} to localStorage:`, error);
     }
   }
 
@@ -88,6 +128,9 @@ class ApiService {
       const validatedLead = LeadSchema.parse(updatedLead);
       this.leads[leadIndex] = validatedLead;
 
+      // Persist to localStorage
+      this.saveToStorage(this.STORAGE_KEYS.LEADS, this.leads);
+
       return {
         data: validatedLead,
         success: true,
@@ -133,6 +176,9 @@ class ApiService {
 
       const validatedOpportunity = OpportunitySchema.parse(opportunity);
       this.opportunities.push(validatedOpportunity);
+
+      // Persist to localStorage
+      this.saveToStorage(this.STORAGE_KEYS.OPPORTUNITIES, this.opportunities);
 
       return {
         data: validatedOpportunity,
@@ -186,6 +232,10 @@ class ApiService {
       const leadIndex = this.leads.findIndex((l) => l.id === leadId);
       this.leads[leadIndex] = updatedLead;
 
+      // Persist both changes to localStorage
+      this.saveToStorage(this.STORAGE_KEYS.LEADS, this.leads);
+      this.saveToStorage(this.STORAGE_KEYS.OPPORTUNITIES, this.opportunities);
+
       return {
         data: { lead: updatedLead, opportunity: validatedOpportunity },
         success: true,
@@ -200,6 +250,7 @@ class ApiService {
   async resetData(): Promise<void> {
     this.initializeData();
     this.opportunities = [];
+    this.saveToStorage(this.STORAGE_KEYS.OPPORTUNITIES, this.opportunities);
   }
 
   async addSampleOpportunities(): Promise<void> {
@@ -227,6 +278,46 @@ class ApiService {
     ];
 
     this.opportunities.push(...sampleOpportunities);
+    this.saveToStorage(this.STORAGE_KEYS.OPPORTUNITIES, this.opportunities);
+  }
+
+  // Data export/import utilities
+  async exportData(): Promise<{ leads: Lead[]; opportunities: Opportunity[]; exportedAt: string }> {
+    return {
+      leads: [...this.leads],
+      opportunities: [...this.opportunities],
+      exportedAt: new Date().toISOString(),
+    };
+  }
+
+  async importData(data: { leads: Lead[]; opportunities: Opportunity[] }): Promise<void> {
+    try {
+      // Validate imported data
+      const validatedLeads = data.leads.map(lead => LeadSchema.parse(lead));
+      const validatedOpportunities = data.opportunities.map(opp => OpportunitySchema.parse(opp));
+
+      this.leads = validatedLeads;
+      this.opportunities = validatedOpportunities;
+
+      // Persist to storage
+      this.saveToStorage(this.STORAGE_KEYS.LEADS, this.leads);
+      this.saveToStorage(this.STORAGE_KEYS.OPPORTUNITIES, this.opportunities);
+    } catch (error) {
+      throw new AppError('Invalid import data format', 'VALIDATION_ERROR', 400);
+    }
+  }
+
+  // Get storage usage info
+  getStorageInfo(): { leads: number; opportunities: number; totalSize: string } {
+    const leadsSize = new Blob([JSON.stringify(this.leads)]).size;
+    const oppsSize = new Blob([JSON.stringify(this.opportunities)]).size;
+    const totalBytes = leadsSize + oppsSize;
+    
+    return {
+      leads: this.leads.length,
+      opportunities: this.opportunities.length,
+      totalSize: `${(totalBytes / 1024).toFixed(2)} KB`,
+    };
   }
 }
 

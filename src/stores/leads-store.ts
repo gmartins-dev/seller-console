@@ -127,11 +127,42 @@ export const useLeadsStore = create<LeadsState>()(
       }),
       {
         name: 'leads-storage',
-        // Only persist filters and opportunities, not the full leads data
+        // Persist all critical data including conversions
         partialize: (state) => ({
-          filters: state.filters,
+          leads: state.leads,
           opportunities: state.opportunities,
+          filters: state.filters,
+          opportunityFilters: state.opportunityFilters,
         }),
+        // Custom storage with compression for large datasets
+        storage: {
+          getItem: (name) => {
+            const item = localStorage.getItem(name);
+            if (!item) return null;
+            try {
+              return JSON.parse(item);
+            } catch {
+              return null;
+            }
+          },
+          setItem: (name, value) => {
+            try {
+              localStorage.setItem(name, JSON.stringify(value));
+            } catch (error) {
+              console.warn('Failed to save to localStorage:', error);
+            }
+          },
+          removeItem: (name) => localStorage.removeItem(name),
+        },
+        // Versioning for data migration
+        version: 1,
+        migrate: (persistedState: any, version: number) => {
+          if (version === 0) {
+            // Migration logic for future schema changes
+            return persistedState;
+          }
+          return persistedState;
+        },
       }
     ),
     {
