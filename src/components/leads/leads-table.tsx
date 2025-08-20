@@ -79,8 +79,74 @@ export function LeadsTable() {
 
   return (
     <>
-      <div className="rounded-md border">
-        <Table>
+      {/* Mobile Card Layout */}
+      <div className="md:hidden space-y-3">
+        {filteredLeads.map((lead) => (
+          <div
+            key={`mobile-${lead.id}`}
+            className={cn(
+              'bg-card rounded-lg border p-4 cursor-pointer transition-colors',
+              isSelected(lead.id) && 'ring-2 ring-primary',
+              hoveredRow === lead.id && 'bg-muted/30'
+            )}
+            onClick={() => handleRowClick(lead)}
+            onMouseEnter={() => setHoveredRow(lead.id)}
+            onMouseLeave={() => setHoveredRow(null)}
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="font-medium text-foreground truncate">{lead.name}</h3>
+                  <Badge
+                    variant={statusConfig[lead.status].variant}
+                    className={cn('text-xs flex-shrink-0', statusConfig[lead.status].color)}
+                  >
+                    {statusConfig[lead.status].label}
+                  </Badge>
+                </div>
+                
+                <div className="space-y-1 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    <Building2 className="h-3 w-3 flex-shrink-0" />
+                    <span className="truncate">{lead.company}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Mail className="h-3 w-3 flex-shrink-0" />
+                    <span className="truncate">{lead.email}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      {sourceConfig[lead.source].icon}
+                      <span>{sourceConfig[lead.source].label}</span>
+                    </div>
+                    <div className={cn('font-medium', getScoreColor(lead.score))}>
+                      Score: {lead.score}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  selectLead(lead.id);
+                }}
+                className="h-8 w-8 p-0 flex-shrink-0 ml-2"
+              >
+                <Eye className="h-4 w-4" />
+                <span className="sr-only">View details</span>
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Tablet & Desktop Table Layout */}
+      <div className="hidden md:block">
+        <div className="rounded-md border">
+          <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[200px]">
@@ -202,6 +268,7 @@ export function LeadsTable() {
             ))}
           </TableBody>
         </Table>
+        </div>
       </div>
 
       {/* Lead Detail Panel */}

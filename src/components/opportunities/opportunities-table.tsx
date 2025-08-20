@@ -92,9 +92,51 @@ export function OpportunitiesTable() {
 
   return (
     <div className="space-y-4">
-      {/* Opportunities Table */}
-      <div className="rounded-md border">
-        <Table>
+      {/* Mobile Card Layout */}
+      <div className="md:hidden space-y-3">
+        {filteredOpportunities.map((opportunity) => (
+          <div
+            key={`mobile-${opportunity.id}`}
+            className="bg-card rounded-lg border p-4"
+          >
+            <div className="space-y-3">
+              <div className="flex items-start justify-between">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-foreground truncate mb-1">
+                    {opportunity.name}
+                  </h3>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Building2 className="h-3 w-3 flex-shrink-0" />
+                    <span className="truncate">{opportunity.accountName}</span>
+                  </div>
+                </div>
+                <div className="text-right flex-shrink-0 ml-2">
+                  <div className="font-medium text-foreground">
+                    {formatCurrency(opportunity.amount)}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <Badge
+                  variant={stageConfig[opportunity.stage].variant}
+                  className={cn('text-xs', stageConfig[opportunity.stage].color)}
+                >
+                  {stageConfig[opportunity.stage].label}
+                </Badge>
+                <div className="text-sm text-muted-foreground">
+                  {formatDate(opportunity.createdAt)}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Tablet & Desktop Table Layout */}
+      <div className="hidden md:block">
+        <div className="rounded-md border">
+          <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[250px]">
@@ -194,6 +236,7 @@ export function OpportunitiesTable() {
             ))}
           </TableBody>
         </Table>
+        </div>
       </div>
     </div>
   );
