@@ -52,32 +52,53 @@ What to explore:
 - 🏷️ Filter leads by status (New, Contacted, Qualified, etc.)
 - 📈 Sort leads by score, name, company, or creation date
 - 👀 View detailed lead information in slide-over panel
+- 📱 Mobile-optimized dual layout (cards + tables)
+- 💾 Persistent data across browser refreshes
 
 #### ✏️ Lead Editing
 - ✅ Inline edit lead status and email
 - 🔐 Real-time email format validation
 - 💾 Save/Cancel actions with comprehensive error handling
 - 🔄 Optimistic updates with automatic rollback on failure
+- 💽 Auto-save to localStorage for data persistence
 
 #### 🎯 Opportunity Conversion
 - 🚀 Convert qualified leads to opportunities
 - 📝 Create opportunities with name, stage, amount, and account details
 - 🎛️ Comprehensive form validation
 - 📊 Track opportunity pipeline and stages
+- 💾 Persistent conversions for survive browser refreshes
 
 #### 📈 Dashboard & Analytics
 - 📊 Real-time statistics cards
 - 🎯 Conversion rate tracking
 - 💰 Pipeline value calculations
 - 📱 Responsive navigation with mobile sidebar
+- 📊 Responsive tables with mobile card layouts
 
 ### 🌟 Advanced Features
 
-#### 🔄 State Management
+#### 📦 Data Persistence
+- 💽 Comprehensive localStorage integration via Zustand persist
+- 💾 Auto-backup mechanism (every 30 minutes)
+- 📤 Data export/import functionality (JSON format)
+- 🛡️ Data validation with Zod schemas
+- 📊 Storage monitoring and management tools
+- 🔄 Lead conversion persistence across browser sessions
+
+#### 📱 Mobile Responsiveness
+- 🎯 Dual-layout design (mobile cards + desktop tables)
+- 📱 Mobile-first responsive breakpoints
+- 🎨 Optimized card layouts for small screens
+- 💪 Progressive enhancement for all device sizes
+- 🎭 Conditional rendering based on screen size
+
+#### 📋 State Management
 - 💾 Persistent filters (localStorage)
 - ⚡ Optimistic updates with rollback capability
-- 🔄 Real-time sync
+- 🔄 Real-time sync with automatic persistence
 - 🛡️ Error boundaries for graceful recovery
+- 📊 **Multi-layer storage strategy** (Zustand + API service)
 
 #### 🎨 User Experience
 - 🌐 Responsive design (mobile-first)
@@ -141,24 +162,35 @@ npm run dev
 2. 🔍 Search by name or company
 3. 🏷️ Filter by status to narrow the list
 4. 📊 Click column headers to sort
+5. 📱 Mobile users: Swipe through card layouts on small screens
 
 ### ✏️ Editing Lead Details
 1. 🖱️ Click any lead row to open the detail panel
 2. ✏️ Click "Edit" to modify information
 3. 💾 Save changes or cancel to revert
 4. ✅ Validation ensures data integrity
+5. 💽 Changes automatically persist across browser sessions
 
 ### 🎯 Converting to Opportunities
 1. 🎯 Open details for a qualified lead
 2. 🚀 Click "Convert to Opportunity"
 3. 📝 Fill in opportunity details (name, stage, amount, account)
 4. ✅ Submit to create the opportunity
+5. 💾 Conversions persist even after browser refresh
 
 ### 📊 Tracking Opportunities
 1. 📊 Navigate to the Opportunities tab
 2. 👀 View pipeline with all active opportunities
 3. 📈 Monitor stages and pipeline value
 4. 📊 Analyze distribution across stages
+5. 📱 Mobile-optimized opportunity cards for small screens
+
+### 💾 Data Management
+1. 📤 Export data: Download all leads and opportunities as JSON
+2. 📥 Import data: Upload JSON files to restore data
+3. 🔄 Auto-backup: Data automatically backs up every 30 minutes
+4. 🗑️ Clear data: Reset all data when needed
+5. 📊 Storage info: Monitor localStorage usage and data size
 
 ## 🔧 Development
 
@@ -213,6 +245,7 @@ seller-console/
 │   │   └── 📁 __tests__/       # Utility function tests
 │   ├── 📁 pages/              # Page components
 │   ├── 📁 stores/             # Zustand state stores
+│   │   └── 📁 __tests__/       # Store unit tests
 │   ├── 📁 test/               # Test setup and configuration
 │   └── 📁 types/              # TypeScript type definitions
 ├── 📄 vitest.config.ts        # Test configuration
@@ -238,6 +271,8 @@ seller-console/
 - 🐻 Zustand — lightweight state management
 - 🔄 TanStack Query — server state management & caching
 - 💾 Persistent storage — localStorage integration
+- 🔄 Zustand persist middleware — automatic state persistence
+- 📊 Multi-layer storage strategy — store + API service persistence
 
 #### 🔐 Forms & Validation
 - 📝 React Hook Form — performant forms with minimal re-renders
@@ -248,6 +283,9 @@ seller-console/
 - 🧪 React Testing Library — simple and complete React testing utilities
 - 📏 ESLint — code linting with React and TypeScript rules
 - ✨ Prettier — consistent code formatting
+- 🎯 52 tests across 11 test files — comprehensive coverage
+- 🧪 Integration testing — data persistence and API layer
+- 📱 Responsive testing — dual-layout component verification
 
 ### 🏛️ Architecture Patterns
 
@@ -257,6 +295,9 @@ seller-console/
 - 🌐 Global state (Zustand), 🔄 server state (TanStack Query), 📍 local state (useState), 📝 form state (React Hook Form)
 - 🛡️ Error boundaries, 🔄 retry logic with backoff, 📊 clear user feedback
 - 🧪 Unit test coverage across components, hooks, API layer, and business logic
+- 💾 Multi-layer persistence — Zustand store + API service storage
+- 📱 Responsive architecture — dual-layout patterns for mobile/desktop
+- 🔄 State synchronization — real-time updates with localStorage backup
 
 ## 🎨 UI Components
 
