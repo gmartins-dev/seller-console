@@ -33,7 +33,6 @@ const mockLeads: Lead[] = [
 ];
 
 describe('useLeadFilters', () => {
-  const mockGetFilteredLeads = vi.fn();
   const mockSetFilters = vi.fn();
   const mockResetFilters = vi.fn();
 
@@ -43,14 +42,13 @@ describe('useLeadFilters', () => {
     vi.mocked(useLeadsStore).mockReturnValue({
       filters: {
         search: '',
-        status: 'all',
+        status: [],
         sortBy: 'score',
         sortOrder: 'desc',
       },
       leads: mockLeads,
       setFilters: mockSetFilters,
       resetFilters: mockResetFilters,
-      getFilteredLeads: mockGetFilteredLeads,
       // Add other required properties
       opportunities: [],
       selectedLead: null,
@@ -64,8 +62,6 @@ describe('useLeadFilters', () => {
       setError: vi.fn(),
       getLeadById: vi.fn(),
     });
-
-    mockGetFilteredLeads.mockReturnValue(mockLeads);
   });
 
   it('calculates stats correctly', () => {
@@ -96,7 +92,6 @@ describe('useLeadFilters', () => {
       leads: mockLeads,
       setFilters: mockSetFilters,
       resetFilters: mockResetFilters,
-      getFilteredLeads: mockGetFilteredLeads,
       opportunities: [],
       selectedLead: null,
       loadingState: { isLoading: false, error: null },

@@ -33,6 +33,12 @@ const mockLeads: Lead[] = [
 vi.mock('@/hooks/use-lead-filters', () => ({
   useLeadFilters: () => ({
     filteredLeads: mockLeads,
+    filters: {
+      search: '',
+      status: [],
+      sortBy: 'score',
+      sortOrder: 'desc',
+    },
     sortBy: vi.fn(),
   }),
   useLeadSelection: () => ({
