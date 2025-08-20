@@ -155,11 +155,11 @@ export const useLeadsStore = create<LeadsState>()(
           removeItem: (name) => localStorage.removeItem(name),
         },
         // Versioning for data migration
-        version: 1,
+        version: 2, // Incremented to force reload of data
         migrate: (persistedState: any, version: number) => {
-          if (version === 0) {
-            // Migration logic for future schema changes
-            return persistedState;
+          if (version < 2) {
+            // Clear old data and force reload from API
+            return undefined;
           }
           return persistedState;
         },

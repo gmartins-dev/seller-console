@@ -1,14 +1,18 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useLeadsStore } from '@/stores/leads-store';
-import type { Opportunity, OpportunityFilters, OpportunityStage } from '@/types';
+import type { OpportunityFilters, OpportunityStage } from '@/types';
 
 export const useOpportunityFilters = () => {
-  const { 
-    opportunityFilters: filters, 
-    setOpportunityFilters, 
-    resetOpportunityFilters, 
-    opportunities 
+  const {
+    opportunityFilters: filters,
+    setOpportunityFilters,
+    resetOpportunityFilters,
+    opportunities
   } = useLeadsStore();
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Memoized filtered and sorted opportunities
   const filteredOpportunities = useMemo(() => {
@@ -70,6 +74,38 @@ export const useOpportunityFilters = () => {
 
     return result;
   }, [opportunities, filters]);
+
+  // Reset to page 1 when filters change
+  useMemo(() => {
+    setCurrentPage(1);
+  }, [filters.search, filters.stage, filters.sortBy, filters.sortOrder]);
+
+  // Paginated opportunities
+  const totalPages = Math.ceil(filteredOpportunities.length / itemsPerPage);
+  const paginatedOpportunities = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredOpportunities.slice(startIndex, endIndex);
+  }, [filteredOpportunities, currentPage, itemsPerPage]);
+
+  // Pagination functions
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   // Statistics
   const stats = useMemo(() => {
@@ -148,13 +184,24 @@ export const useOpportunityFilters = () => {
     // Current state
     filters,
     filteredOpportunities,
+    paginatedOpportunities,
     stats,
     hasActiveFilters,
+
+    // Pagination state
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    totalItems: filteredOpportunities.length,
 
     // Actions
     setOpportunityFilters,
     updateFilter,
     resetOpportunityFilters,
+    setItemsPerPage,
+    goToPage,
+    goToNextPage,
+    goToPreviousPage,
 
     // Convenient filter actions
     ...filterActions,

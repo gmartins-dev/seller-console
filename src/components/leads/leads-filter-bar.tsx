@@ -82,8 +82,8 @@ export function LeadsFilterBar() {
               <Button variant="outline" className="w-full justify-between">
                 <div className="flex items-center">
                   <Filter className="mr-2 h-4 w-4" />
-                  {filters.status.length === 0 
-                    ? 'Filter by status' 
+                  {filters.status.length === 0
+                    ? 'Filter by status'
                     : `${filters.status.length} status${filters.status.length > 1 ? 'es' : ''} selected`
                   }
                 </div>
@@ -110,9 +110,9 @@ export function LeadsFilterBar() {
               {filters.status.length > 0 && (
                 <>
                   <DropdownMenuSeparator />
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={clearStatusFilter}
                     className="w-full justify-center"
                   >
@@ -170,7 +170,7 @@ export function LeadsFilterBar() {
                 </Badge>
               )}
 
-              {filters.status.length > 0 && 
+              {filters.status.length > 0 &&
                 filters.status.map((status) => (
                   <Badge key={status} variant="secondary" className="gap-1">
                     Status: {status}
@@ -191,10 +191,6 @@ export function LeadsFilterBar() {
               </Button>
             </>
           )}
-        </div>
-
-        <div className="text-muted-foreground text-sm">
-          Showing {stats.filtered} of {stats.total} leads
         </div>
       </div>
     </div>

@@ -324,6 +324,9 @@ class ApiService {
 // Export singleton instance
 export const apiService = new ApiService();
 
+// Export class for testing
+export default ApiService;
+
 // Export individual functions for easier testing and use
 export const leadsApi = {
   getLeads: () => apiService.getLeads(),

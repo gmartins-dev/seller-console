@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Pagination } from '@/components/ui/pagination';
 import { ExternalLink, Mail, Building2, User, ArrowUpDown, Eye } from 'lucide-react';
 import { useLeadFilters, useLeadSelection } from '@/hooks/use-lead-filters';
 import { LeadDetailPanel } from './lead-detail-panel';
@@ -46,7 +47,19 @@ const getScoreColor = (score: number): string => {
 };
 
 export function LeadsTable() {
-  const { filteredLeads, filters, sortBy } = useLeadFilters();
+  const {
+    paginatedLeads,
+    filters,
+    sortBy,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    goToPage,
+    goToNextPage,
+    goToPreviousPage,
+    setItemsPerPage,
+  } = useLeadFilters();
   const { selectedLead, selectLead, clearSelection, isSelected } = useLeadSelection();
   const [hoveredRow, setHoveredRow] = useState<string | null>(null);
 
@@ -69,7 +82,7 @@ export function LeadsTable() {
     );
   };
 
-  if (filteredLeads.length === 0) {
+  if (paginatedLeads.length === 0) {
     return (
       <div className="py-12 text-center">
         <div className="text-muted-foreground">No leads match your current filters.</div>
@@ -81,7 +94,7 @@ export function LeadsTable() {
     <>
       {/* Mobile Card Layout */}
       <div className="md:hidden space-y-3">
-        {filteredLeads.map((lead) => (
+        {paginatedLeads.map((lead: Lead) => (
           <div
             key={`mobile-${lead.id}`}
             className={cn(
@@ -198,7 +211,7 @@ export function LeadsTable() {
           </TableHeader>
 
           <TableBody>
-            {filteredLeads.map((lead) => (
+            {paginatedLeads.map((lead: Lead) => (
               <TableRow
                 key={lead.id}
                 className={cn(
@@ -269,6 +282,20 @@ export function LeadsTable() {
           </TableBody>
         </Table>
         </div>
+      </div>
+
+      {/* Pagination */}
+      <div className="border-t pt-4">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          itemsPerPage={itemsPerPage}
+          totalItems={totalItems}
+          onPageChange={goToPage}
+          onItemsPerPageChange={setItemsPerPage}
+          onPrevious={goToPreviousPage}
+          onNext={goToNextPage}
+        />
       </div>
 
       {/* Lead Detail Panel */}

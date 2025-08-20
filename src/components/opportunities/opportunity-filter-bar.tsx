@@ -83,8 +83,8 @@ export function OpportunityFilterBar() {
               <Button variant="outline" className="w-full justify-between">
                 <div className="flex items-center">
                   <Filter className="mr-2 h-4 w-4" />
-                  {filters.stage.length === 0 
-                    ? 'Filter by stage' 
+                  {filters.stage.length === 0
+                    ? 'Filter by stage'
                     : `${filters.stage.length} stage${filters.stage.length > 1 ? 's' : ''} selected`
                   }
                 </div>
@@ -111,9 +111,9 @@ export function OpportunityFilterBar() {
               {filters.stage.length > 0 && (
                 <>
                   <DropdownMenuSeparator />
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={clearStageFilter}
                     className="w-full justify-center"
                   >
@@ -171,7 +171,7 @@ export function OpportunityFilterBar() {
                 </Badge>
               )}
 
-              {filters.stage.length > 0 && 
+              {filters.stage.length > 0 &&
                 filters.stage.map((stage) => (
                   <Badge key={stage} variant="secondary" className="gap-1">
                     Stage: {stage.replace('_', ' ')}
@@ -192,10 +192,6 @@ export function OpportunityFilterBar() {
               </Button>
             </>
           )}
-        </div>
-
-        <div className="text-muted-foreground text-sm">
-          Showing {stats.filtered} of {stats.total} opportunities
         </div>
       </div>
     </div>

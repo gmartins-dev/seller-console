@@ -7,6 +7,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { Pagination } from '@/components/ui/pagination';
 import { DollarSign, Building2, Calendar, Target, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { useOpportunityFilters } from '@/hooks/use-opportunity-filters';
 import { cn } from '@/lib/utils';
@@ -55,7 +56,20 @@ const formatDate = (dateString: string | undefined): string => {
 };
 
 export function OpportunitiesTable() {
-  const { filteredOpportunities, stats, filters, sortBy } = useOpportunityFilters();
+  const {
+    paginatedOpportunities,
+    stats,
+    filters,
+    sortBy,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    goToPage,
+    goToNextPage,
+    goToPreviousPage,
+    setItemsPerPage,
+  } = useOpportunityFilters();
 
   // Helper function to get sort icon
   const getSortIcon = (column: string) => {
@@ -69,7 +83,7 @@ export function OpportunitiesTable() {
     );
   };
 
-  if (filteredOpportunities.length === 0) {
+  if (paginatedOpportunities.length === 0) {
     return (
       <div className="py-12 text-center">
         <div className="mb-4 flex justify-center">
@@ -81,7 +95,7 @@ export function OpportunitiesTable() {
           {stats.total === 0 ? 'No opportunities yet' : 'No opportunities match your filters'}
         </h3>
         <p className="text-muted-foreground">
-          {stats.total === 0 
+          {stats.total === 0
             ? 'Convert some qualified leads to create your first opportunities.'
             : 'Try adjusting your search or filters to find what you\'re looking for.'
           }
@@ -94,7 +108,7 @@ export function OpportunitiesTable() {
     <div className="space-y-4">
       {/* Mobile Card Layout */}
       <div className="md:hidden space-y-3">
-        {filteredOpportunities.map((opportunity) => (
+        {paginatedOpportunities.map((opportunity) => (
           <div
             key={`mobile-${opportunity.id}`}
             className="bg-card rounded-lg border p-4"
@@ -116,7 +130,7 @@ export function OpportunitiesTable() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <Badge
                   variant={stageConfig[opportunity.stage].variant}
@@ -140,7 +154,7 @@ export function OpportunitiesTable() {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[250px]">
-                <button 
+                <button
                   className="flex items-center gap-2 hover:text-foreground"
                   onClick={() => sortBy('name')}
                 >
@@ -151,7 +165,7 @@ export function OpportunitiesTable() {
               </TableHead>
 
               <TableHead className="hidden md:table-cell">
-                <button 
+                <button
                   className="flex items-center gap-2 hover:text-foreground"
                   onClick={() => sortBy('accountName')}
                 >
@@ -162,7 +176,7 @@ export function OpportunitiesTable() {
               </TableHead>
 
               <TableHead className="w-[120px]">
-                <button 
+                <button
                   className="flex items-center gap-2 hover:text-foreground"
                   onClick={() => sortBy('stage')}
                 >
@@ -172,7 +186,7 @@ export function OpportunitiesTable() {
               </TableHead>
 
               <TableHead className="w-[120px] text-right">
-                <button 
+                <button
                   className="flex items-center justify-end gap-2 hover:text-foreground ml-auto"
                   onClick={() => sortBy('amount')}
                 >
@@ -183,7 +197,7 @@ export function OpportunitiesTable() {
               </TableHead>
 
               <TableHead className="hidden w-[120px] lg:table-cell">
-                <button 
+                <button
                   className="flex items-center gap-2 hover:text-foreground"
                   onClick={() => sortBy('createdAt')}
                 >
@@ -196,7 +210,7 @@ export function OpportunitiesTable() {
           </TableHeader>
 
           <TableBody>
-            {filteredOpportunities.map((opportunity) => (
+            {paginatedOpportunities.map((opportunity) => (
               <TableRow key={opportunity.id} className="hover:bg-muted/50">
                 <TableCell>
                   <div>
@@ -237,6 +251,20 @@ export function OpportunitiesTable() {
           </TableBody>
         </Table>
         </div>
+      </div>
+
+      {/* Pagination */}
+      <div className="border-t pt-4">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          itemsPerPage={itemsPerPage}
+          totalItems={totalItems}
+          onPageChange={goToPage}
+          onItemsPerPageChange={setItemsPerPage}
+          onPrevious={goToPreviousPage}
+          onNext={goToNextPage}
+        />
       </div>
     </div>
   );

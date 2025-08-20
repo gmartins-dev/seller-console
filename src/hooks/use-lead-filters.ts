@@ -1,9 +1,13 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useLeadsStore } from '@/stores/leads-store';
 import type { Lead, LeadFilters, LeadStatus } from '@/types';
 
 export const useLeadFilters = () => {
   const { filters, setFilters, resetFilters, leads } = useLeadsStore();
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Memoized filtered and sorted leads
   const filteredLeads = useMemo(() => {
@@ -63,6 +67,38 @@ export const useLeadFilters = () => {
 
     return result;
   }, [leads, filters]);
+
+  // Reset to page 1 when filters change
+  useMemo(() => {
+    setCurrentPage(1);
+  }, [filters.search, filters.status, filters.sortBy, filters.sortOrder]);
+
+  // Paginated leads
+  const totalPages = Math.ceil(filteredLeads.length / itemsPerPage);
+  const paginatedLeads = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredLeads.slice(startIndex, endIndex);
+  }, [filteredLeads, currentPage, itemsPerPage]);
+
+  // Pagination functions
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   // Statistics
   const stats = useMemo(() => {
@@ -144,13 +180,24 @@ export const useLeadFilters = () => {
     // Current state
     filters,
     filteredLeads,
+    paginatedLeads,
     stats,
     hasActiveFilters,
+
+    // Pagination state
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    totalItems: filteredLeads.length,
 
     // Actions
     setFilters,
     updateFilter,
     resetFilters,
+    setItemsPerPage,
+    goToPage,
+    goToNextPage,
+    goToPreviousPage,
 
     // Convenient filter actions
     ...filterActions,

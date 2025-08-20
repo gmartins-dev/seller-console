@@ -33,12 +33,21 @@ const mockLeads: Lead[] = [
 vi.mock('@/hooks/use-lead-filters', () => ({
   useLeadFilters: () => ({
     filteredLeads: mockLeads,
+    paginatedLeads: mockLeads,
     filters: {
       search: '',
       status: [],
       sortBy: 'score',
       sortOrder: 'desc',
     },
+    currentPage: 1,
+    totalPages: 1,
+    itemsPerPage: 10,
+    totalItems: mockLeads.length,
+    goToPage: vi.fn(),
+    goToNextPage: vi.fn(),
+    goToPreviousPage: vi.fn(),
+    setItemsPerPage: vi.fn(),
     sortBy: vi.fn(),
   }),
   useLeadSelection: () => ({
