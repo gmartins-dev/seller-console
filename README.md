@@ -53,6 +53,9 @@ What to explore:
 - 📈 Sort leads by score, name, company, or creation date
 - 👀 View detailed lead information in slide-over panel
 - 📱 Mobile-optimized dual layout (cards + tables)
+- 📑 Advanced pagination controls (5, 10, 20, 30, 50 items per page)
+- 🔢 Smart page navigation with ellipsis for large datasets
+- 📊 Real-time pagination stats (showing X-Y of Z items)
 - 💾 Persistent data across browser refreshes
 
 #### ✏️ Lead Editing
@@ -67,14 +70,24 @@ What to explore:
 - 📝 Create opportunities with name, stage, amount, and account details
 - 🎛️ Comprehensive form validation
 - 📊 Track opportunity pipeline and stages
-- 💾 Persistent conversions for survive browser refreshes
+- 📑 Advanced pagination controls for opportunities table
+- 🔍 Search opportunities by name or account
+- 🏷️ Filter opportunities by stage (Prospecting, Qualification, etc.)
+- 📈 Sort opportunities by stage, amount, or creation date
+- 📱 Responsive opportunity cards for mobile viewing
+- 🔢 Real-time pagination with customizable items per page
+- 💾 Persistent conversions that survive browser refreshes
 
 #### 📈 Dashboard & Analytics
 - 📊 Real-time statistics cards
 - 🎯 Conversion rate tracking
 - 💰 Pipeline value calculations
 - 📱 Responsive navigation with mobile sidebar
-- 📊 Responsive tables with mobile card layouts
+- 📑 Paginated tables with mobile card layouts
+- 📊 Advanced pagination controls for both leads and opportunities
+- 🔢 Customizable page sizes (5, 10, 20, 30, 50 items)
+- 📋 Intelligent page navigation with ellipsis for large datasets
+- 📊 Real-time pagination statistics and item counts
 
 ### 🌟 Advanced Features
 
@@ -90,6 +103,8 @@ What to explore:
 - 🎯 Dual-layout design (mobile cards + desktop tables)
 - 📱 Mobile-first responsive breakpoints
 - 🎨 Optimized card layouts for small screens
+- 📑 Touch-friendly pagination controls
+- 📊 Responsive pagination component with adaptive sizing
 - 💪 Progressive enhancement for all device sizes
 - 🎭 Conditional rendering based on screen size
 
@@ -112,6 +127,32 @@ What to explore:
 - 🧪 Schema validation with Zod
 - 🎯 Custom hooks for reusable logic
 - 📦 Component architecture for maintainability
+
+### 📄 Pagination System
+
+Seller Console features a comprehensive pagination system designed for optimal performance and user experience:
+
+#### 🚀 Key Features
+- 📄 **Smart Pagination Controls** — Navigate large datasets efficiently
+- 🔢 **Customizable Page Sizes** — Choose from 5, 10, 20, 30, or 50 items per page
+- 📊 **Real-time Statistics** — Shows "X-Y of Z items" for clear context
+- 🎯 **Intelligent Navigation** — Ellipsis pattern for large page counts
+- ⚡ **Performance Optimized** — Only renders visible items for fast performance
+- 📱 **Mobile Responsive** — Touch-friendly controls on all devices
+- 💾 **State Persistence** — Page preferences maintained across sessions
+
+#### 🛠️ Implementation Details
+- **Auto-reset**: Automatically resets to page 1 when filters change
+- **Boundary Handling**: Prevents navigation beyond valid page ranges
+- **Visual Feedback**: Clear active page indication and disabled states
+- **Accessibility**: Keyboard navigation and screen reader support
+- **Consistent API**: Same pagination interface for leads and opportunities
+
+#### 📊 Coverage
+- ✅ **Leads Table** — Full pagination with filtering and sorting
+- ✅ **Opportunities Table** — Complete pagination functionality
+- ✅ **Mobile Cards** — Paginated card layouts for small screens
+- ✅ **Test Coverage** — Comprehensive unit and integration tests
 
 ### 🌙 Theme System
 
@@ -158,11 +199,13 @@ npm run dev
 ## 📚 Usage Guide
 
 ### 🎯 Managing Leads
-1. 👀 View leads in the main sortable table
+1. 👀 View leads in the main sortable, paginated table
 2. 🔍 Search by name or company
 3. 🏷️ Filter by status to narrow the list
 4. 📊 Click column headers to sort
-5. 📱 Mobile users: Swipe through card layouts on small screens
+5. 📄 Navigate through pages using pagination controls
+6. 🔢 Adjust items per page (5, 10, 20, 30, 50) as needed
+7. 📱 Mobile users: Swipe through card layouts on small screens
 
 ### ✏️ Editing Lead Details
 1. 🖱️ Click any lead row to open the detail panel
@@ -180,10 +223,15 @@ npm run dev
 
 ### 📊 Tracking Opportunities
 1. 📊 Navigate to the Opportunities tab
-2. 👀 View pipeline with all active opportunities
-3. 📈 Monitor stages and pipeline value
-4. 📊 Analyze distribution across stages
-5. 📱 Mobile-optimized opportunity cards for small screens
+2. 👀 View paginated pipeline with all active opportunities
+3. 🔍 Search opportunities by name or account
+4. 🏷️ Filter by stage (Prospecting, Qualification, Proposal, etc.)
+5. 📈 Sort by stage, amount, or creation date
+6. 📑 Navigate through pages with advanced pagination controls
+7. 🔢 Customize items per page for optimal viewing
+8. 📈 Monitor stages and pipeline value
+9. 📊 Analyze distribution across stages
+10. 📱 Mobile-optimized opportunity cards for small screens
 
 ### 💾 Data Management
 1. 📤 Export data: Download all leads and opportunities as JSON
@@ -284,8 +332,10 @@ seller-console/
 - 📏 ESLint — code linting with React and TypeScript rules
 - ✨ Prettier — consistent code formatting
 - 🎯 52 tests across 11 test files — comprehensive coverage
-- 🧪 Integration testing — data persistence and API layer
+- 🧪 Integration testing — data persistence, API layer, and pagination
 - 📱 Responsive testing — dual-layout component verification
+- 🔄 State management testing — Zustand store and custom hooks
+- 📄 Pagination testing — comprehensive pagination functionality coverage
 
 ### 🏛️ Architecture Patterns
 
@@ -306,10 +356,11 @@ seller-console/
 Our application uses a carefully curated set of components built on top of Shadcn UI:
 
 #### 📊 Data Display
-- 📋 Table — sortable, filterable data tables
+- 📋 Table — sortable, filterable data tables with pagination
 - 🎯 Badge — status indicators and labels
 - 📄 Card — content containers with consistent spacing
 - 📊 Tabs — organized content sections
+- 📄 Pagination — advanced pagination controls with customizable page sizes
 
 #### 📝 Form Elements
 - 📝 Input — text inputs with validation states
