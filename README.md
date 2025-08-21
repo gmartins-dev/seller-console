@@ -17,6 +17,9 @@
 
 ## 📋 Overview
 
+> **📖 Want a comprehensive 5-minute explanation of this app?**  
+> [**Read the complete APP_EXPLANATION.md**](./APP_EXPLANATION.md) - Perfect for understanding what this app does, how it works, and why it's built this way.
+
 Seller Console is a lightweight yet powerful CRM application designed for sales teams to efficiently manage leads and convert them into opportunities. Built with modern web technologies and best practices, it provides a seamless experience across all devices.
 
 ## 🌟 Live Demo
