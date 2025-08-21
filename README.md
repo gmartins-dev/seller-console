@@ -17,7 +17,7 @@
 
 ## 📋 Overview
 
-Seller Console is a lightweight yet powerful CRM application designed for sales teams to efficiently manage leads and convert them into opportunities. Built with modern web technologies and best practices, it provides a seamless experience across all devices.
+Seller Console is a powerful CRM application designed for sales teams to efficiently manage leads and convert them into opportunities. Built with modern web technologies and best practices, it provides a seamless experience across all devices.
 
 ## 🌟 Live Demo
 
