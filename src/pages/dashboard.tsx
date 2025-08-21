@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Users, Target, TrendingUp, DollarSign, Menu } from 'lucide-react';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { Sidebar } from '@/components/sidebar';
 import { LeadsTable } from '@/components/leads/leads-table';
 import { LeadsFilterBar } from '@/components/leads/leads-filter-bar';
 import { OpportunitiesTable } from '@/components/opportunities/opportunities-table';
@@ -15,10 +15,12 @@ import { useLeadsQuery, useOpportunitiesQuery } from '@/lib/queries';
 import { useLeadFilters } from '@/hooks/use-lead-filters';
 import { LoadingState } from '@/components/ui/loading-state';
 import { ModeToggle } from '@/components/mode-toggle';
+import { cn } from '@/lib/utils';
 
 export function Dashboard() {
   const [activeTab, setActiveTab] = useState('leads');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // Data fetching
   const {
@@ -77,69 +79,33 @@ export function Dashboard() {
     },
   ];
 
-  const sidebarContent = (
-    <div className="flex h-full flex-col">
-      <div className="p-6">
-        <h2 className="text-foreground text-lg font-semibold">Seller Console</h2>
-        <p className="text-muted-foreground text-sm">Lead Management</p>
-      </div>
-
-      <nav className="flex-1 px-4">
-        <div className="space-y-2">
-          <Button
-            variant={activeTab === 'leads' ? 'default' : 'ghost'}
-            className="w-full justify-start"
-            onClick={() => {
-              setActiveTab('leads');
-              setSidebarOpen(false);
-            }}
-          >
-            <Users className="mr-2 h-4 w-4" />
-            Leads
-            {stats.total > 0 && (
-              <Badge variant="secondary" className="ml-auto">
-                {stats.total}
-              </Badge>
-            )}
-          </Button>
-
-          <Button
-            variant={activeTab === 'opportunities' ? 'default' : 'ghost'}
-            className="w-full justify-start"
-            onClick={() => {
-              setActiveTab('opportunities');
-              setSidebarOpen(false);
-            }}
-          >
-            <Target className="mr-2 h-4 w-4" />
-            Opportunities
-            {totalOpportunities > 0 && (
-              <Badge variant="secondary" className="ml-auto">
-                {totalOpportunities}
-              </Badge>
-            )}
-          </Button>
-        </div>
-      </nav>
-
-      <div className="border-t p-4">
-        <div className="text-muted-foreground text-xs">
-          <p>Version 1.0.0</p>
-          <p>Mini Seller Console</p>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div className="bg-background flex h-screen">
       {/* Desktop Sidebar */}
-      <div className="bg-card hidden w-64 border-r lg:flex">{sidebarContent}</div>
+      <div className={cn(
+        "bg-card hidden border-r lg:flex transition-all duration-300 ease-in-out relative",
+        sidebarCollapsed ? "w-16" : "w-64"
+      )}>
+        <Sidebar
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          collapsed={sidebarCollapsed}
+          onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+          leadsCount={stats.total}
+          opportunitiesCount={totalOpportunities}
+        />
+      </div>
 
       {/* Mobile Sidebar */}
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
         <SheetContent side="left" className="w-64 p-0">
-          {sidebarContent}
+          <Sidebar
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            onMobileClose={() => setSidebarOpen(false)}
+            leadsCount={stats.total}
+            opportunitiesCount={totalOpportunities}
+          />
         </SheetContent>
       </Sheet>
 
@@ -147,16 +113,15 @@ export function Dashboard() {
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Header */}
         <header className="bg-card flex h-16 items-center border-b px-4 lg:px-6">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="sm" className="mr-2 lg:hidden">
-                <Menu className="h-4 w-4" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-64 p-0">
-              {sidebarContent}
-            </SheetContent>
-          </Sheet>
+          {/* Mobile Sidebar Trigger */}
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="mr-2 lg:hidden"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <Menu className="h-4 w-4" />
+          </Button>
 
           <div className="flex-1">
             <h1 className="text-foreground text-xl font-semibold">Dashboard</h1>
