@@ -159,7 +159,8 @@ export function LeadsTable() {
       {/* Tablet & Desktop Table Layout */}
       <div className="hidden md:block">
         <div className="rounded-md border">
-          <Table>
+          <div className="overflow-x-auto">
+            <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[200px]">
@@ -281,6 +282,7 @@ export function LeadsTable() {
             ))}
           </TableBody>
         </Table>
+          </div>
         </div>
       </div>
 

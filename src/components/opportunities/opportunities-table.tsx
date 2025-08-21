@@ -150,7 +150,8 @@ export function OpportunitiesTable() {
       {/* Tablet & Desktop Table Layout */}
       <div className="hidden md:block">
         <div className="rounded-md border">
-          <Table>
+          <div className="overflow-x-auto">
+            <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[250px]">
@@ -250,6 +251,7 @@ export function OpportunitiesTable() {
             ))}
           </TableBody>
         </Table>
+          </div>
         </div>
       </div>
 

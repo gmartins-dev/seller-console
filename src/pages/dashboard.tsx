@@ -80,7 +80,7 @@ export function Dashboard() {
   ];
 
   return (
-    <div className="bg-background flex h-screen">
+    <div className="bg-background flex min-h-screen">
       {/* Desktop Sidebar */}
       <div className={cn(
         "bg-card hidden border-r lg:flex transition-all duration-300 ease-in-out relative",
@@ -110,7 +110,7 @@ export function Dashboard() {
       </Sheet>
 
       {/* Main Content */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col">
         {/* Header */}
         <header className="bg-card flex h-16 items-center border-b px-4 lg:px-6">
           {/* Mobile Sidebar Trigger */}
@@ -134,7 +134,7 @@ export function Dashboard() {
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-auto p-4 lg:p-6">
+        <main className="flex-1 p-4 lg:p-6">
           {/* Stats Cards */}
           <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             {dashboardStats.map((stat) => (
