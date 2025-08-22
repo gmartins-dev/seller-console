@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card';
-import { Target, DollarSign, TrendingUp } from 'lucide-react';
+import { Goal, DollarSign, TrendingUp } from 'lucide-react';
 import { useOpportunityFilters } from '@/hooks/use-opportunity-filters';
 
 // Format currency
@@ -24,7 +24,7 @@ export function OpportunitySummaryCards() {
     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
       <Card className="p-4">
         <div className="mb-2 flex items-center gap-2">
-          <Target className="h-4 w-4 text-blue-600" />
+          <Goal className="h-4 w-4 text-blue-600" />
           <span className="text-sm font-medium">Total Opportunities</span>
         </div>
         <div className="text-2xl font-bold">{stats.total}</div>

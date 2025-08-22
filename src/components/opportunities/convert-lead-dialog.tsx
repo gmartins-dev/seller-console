@@ -27,7 +27,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { LoadingOverlay } from '@/components/ui/loading-state';
-import { Target, DollarSign } from 'lucide-react';
+import { Goal, DollarSign } from 'lucide-react';
 import { useConvertLeadMutation } from '@/lib/queries';
 import { useErrorHandler } from '@/lib/queries';
 import type { Lead } from '@/types';
@@ -107,13 +107,13 @@ export function ConvertLeadDialog({ lead, open, onOpenChange, onSuccess }: Conve
     label: string;
     description: string;
   }[] = [
-    { value: 'prospecting', label: 'Prospecting', description: 'Initial contact and research' },
-    { value: 'qualification', label: 'Qualification', description: 'Qualifying the opportunity' },
-    { value: 'proposal', label: 'Proposal', description: 'Proposal submitted' },
-    { value: 'negotiation', label: 'Negotiation', description: 'In negotiation phase' },
-    { value: 'closed_won', label: 'Closed Won', description: 'Successfully closed' },
-    { value: 'closed_lost', label: 'Closed Lost', description: 'Lost the opportunity' },
-  ];
+      { value: 'prospecting', label: 'Prospecting', description: 'Initial contact and research' },
+      { value: 'qualification', label: 'Qualification', description: 'Qualifying the opportunity' },
+      { value: 'proposal', label: 'Proposal', description: 'Proposal submitted' },
+      { value: 'negotiation', label: 'Negotiation', description: 'In negotiation phase' },
+      { value: 'closed_won', label: 'Closed Won', description: 'Successfully closed' },
+      { value: 'closed_lost', label: 'Closed Lost', description: 'Lost the opportunity' },
+    ];
 
   if (!lead) return null;
 
@@ -123,7 +123,7 @@ export function ConvertLeadDialog({ lead, open, onOpenChange, onSuccess }: Conve
         <LoadingOverlay isLoading={convertLeadMutation.isPending}>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Target className="h-5 w-5" />
+              <Goal className="h-5 w-5" />
               Convert Lead to Opportunity
             </DialogTitle>
             <DialogDescription>
@@ -223,7 +223,7 @@ export function ConvertLeadDialog({ lead, open, onOpenChange, onSuccess }: Conve
                   Cancel
                 </Button>
                 <Button type="submit">
-                  <Target className="mr-2 h-4 w-4" />
+                  <Goal className="mr-2 h-4 w-4" />
                   Convert Lead
                 </Button>
               </div>

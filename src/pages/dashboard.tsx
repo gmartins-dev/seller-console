@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, Target, TrendingUp, DollarSign, Menu } from 'lucide-react';
+import { Users, Goal, TrendingUp, DollarSign, Menu } from 'lucide-react';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Sidebar } from '@/components/sidebar';
 import { LeadsTable } from '@/components/leads/leads-table';
@@ -57,7 +57,7 @@ export function Dashboard() {
       title: 'Conversion Rate',
       value: `${stats.conversionRate}%`,
       description: 'Leads to opportunities',
-      icon: Target,
+      icon: Goal,
       color: 'text-green-600',
       bgColor: 'bg-green-50',
     },
@@ -114,9 +114,9 @@ export function Dashboard() {
         {/* Header */}
         <header className="bg-card flex h-16 items-center border-b px-4 lg:px-6">
           {/* Mobile Sidebar Trigger */}
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             className="mr-2 lg:hidden"
             onClick={() => setSidebarOpen(true)}
           >

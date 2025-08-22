@@ -20,7 +20,7 @@ const stageConfig: Record<
   proposal: { label: 'Proposal', variant: 'default', color: 'bg-purple-100 text-purple-800' },
   negotiation: { label: 'Negotiation', variant: 'default', color: 'bg-orange-100 text-orange-800' },
   closed_won: { label: 'Closed Won', variant: 'default', color: 'bg-green-100 text-green-800' },
-  closed_lost: { label: 'Closed Lost', variant: 'destructive', color: 'bg-red-100 text-red-800' },
+  closed_lost: { label: 'Closed Lost', variant: 'destructive', color: 'bg-red-100 text-gray-800' },
 };
 
 export function OpportunityStageDistribution() {

@@ -37,7 +37,7 @@ import {
   Phone,
   Calendar,
   TrendingUp,
-  Target,
+  Goal,
   Save,
   X,
   ExternalLink,
@@ -119,7 +119,7 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
     contacted: { label: 'Contacted', color: 'bg-yellow-100 text-yellow-800' },
     qualified: { label: 'Qualified', color: 'bg-green-100 text-green-800' },
     unqualified: { label: 'Unqualified', color: 'bg-gray-100 text-gray-800' },
-    lost: { label: 'Lost', color: 'bg-red-100 text-red-800' },
+    lost: { label: 'Lost', color: 'bg-red-100 text-gray-800' },
   };
 
   const sourceConfig = {
@@ -301,7 +301,7 @@ export function LeadDetailPanel({ lead, open, onClose }: LeadDetailPanelProps) {
                   disabled={!canConvert}
                   className="w-full"
                 >
-                  <Target className="mr-2 h-4 w-4" />
+                  <Goal className="mr-2 h-4 w-4" />
                   Convert to Opportunity
                 </Button>
 

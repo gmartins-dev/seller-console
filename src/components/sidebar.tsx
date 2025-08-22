@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Users, Target, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { Users, Goal, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface SidebarProps {
@@ -77,7 +77,7 @@ export function Sidebar({
             onClick={() => handleTabChange('opportunities')}
             title={collapsed ? 'Opportunities' : undefined}
           >
-            <Target className={cn("h-4 w-4", !collapsed && "mr-2")} />
+            <Goal className={cn("h-4 w-4", !collapsed && "mr-2")} />
             {!collapsed && (
               <>
                 Opportunities

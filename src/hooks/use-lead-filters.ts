@@ -50,6 +50,10 @@ export const useLeadFilters = () => {
           aValue = a.status;
           bValue = b.status;
           break;
+        case 'source':
+          aValue = a.source;
+          bValue = b.source;
+          break;
         case 'createdAt':
           aValue = new Date(a.createdAt || 0);
           bValue = new Date(b.createdAt || 0);

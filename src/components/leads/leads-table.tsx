@@ -10,7 +10,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Pagination } from '@/components/ui/pagination';
-import { ExternalLink, Mail, Building2, User, ArrowUpDown, Eye } from 'lucide-react';
+import { ExternalLink, Mail, Building2, User, ArrowUpDown, Goal } from 'lucide-react';
 import { useLeadFilters, useLeadSelection } from '@/hooks/use-lead-filters';
 import { LeadDetailPanel } from './lead-detail-panel';
 import { cn } from '@/lib/utils';
@@ -25,7 +25,7 @@ const statusConfig: Record<
   contacted: { label: 'Contacted', variant: 'secondary', color: 'bg-yellow-100 text-yellow-800' },
   qualified: { label: 'Qualified', variant: 'default', color: 'bg-green-100 text-green-800' },
   unqualified: { label: 'Unqualified', variant: 'outline', color: 'bg-gray-100 text-gray-800' },
-  lost: { label: 'Lost', variant: 'destructive', color: 'bg-red-100 text-red-800' },
+  lost: { label: 'Lost', variant: 'destructive', color: 'bg-red-100 text-gray-800' },
 };
 
 // Source configurations
@@ -67,7 +67,7 @@ export function LeadsTable() {
     selectLead(lead.id);
   };
 
-  const handleSort = (field: 'score' | 'name' | 'company' | 'createdAt') => {
+  const handleSort = (field: 'score' | 'name' | 'company' | 'createdAt' | 'source' | 'status') => {
     sortBy(field);
   };
 
@@ -117,7 +117,7 @@ export function LeadsTable() {
                     {statusConfig[lead.status].label}
                   </Badge>
                 </div>
-                
+
                 <div className="space-y-1 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <Building2 className="h-3 w-3 flex-shrink-0" />
@@ -138,7 +138,7 @@ export function LeadsTable() {
                   </div>
                 </div>
               </div>
-              
+
               <Button
                 variant="ghost"
                 size="sm"
@@ -148,7 +148,7 @@ export function LeadsTable() {
                 }}
                 className="h-8 w-8 p-0 flex-shrink-0 ml-2"
               >
-                <Eye className="h-4 w-4" />
+                <Goal className="h-4 w-4" />
                 <span className="sr-only">View details</span>
               </Button>
             </div>
@@ -164,50 +164,69 @@ export function LeadsTable() {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[200px]">
-                <Button
-                  variant="ghost"
+                <span
+                  className="flex items-center cursor-pointer hover:text-foreground"
                   onClick={() => handleSort('name')}
-                  className="h-auto p-0 font-medium hover:bg-transparent"
                 >
-                  <User className="mr-2 h-4 w-4" />
+                  <User className="text-muted-foreground mr-2 h-4 w-4" />
                   Lead
                   {getSortIcon('name')}
-                </Button>
+                </span>
               </TableHead>
 
               <TableHead className="w-[200px]">
-                <Button
-                  variant="ghost"
+                <span
+                  className="flex items-center cursor-pointer hover:text-foreground"
                   onClick={() => handleSort('company')}
-                  className="h-auto p-0 font-medium hover:bg-transparent"
                 >
-                  <Building2 className="mr-2 h-4 w-4" />
+                  <Building2 className="text-muted-foreground mr-2 h-4 w-4" />
                   Company
                   {getSortIcon('company')}
-                </Button>
+                </span>
               </TableHead>
 
               <TableHead className="hidden md:table-cell">
-                <Mail className="mr-2 inline h-4 w-4" />
-                Email
+                <span className="flex items-center text-sm">
+                  <Mail className="text-muted-foreground mr-2 h-3 w-3" />
+                  Email
+                </span>
               </TableHead>
 
-              <TableHead className="hidden lg:table-cell">Source</TableHead>
+              <TableHead className="hidden lg:table-cell">
+                <span
+                  className="flex items-center text-sm cursor-pointer hover:text-foreground"
+                  onClick={() => handleSort('source')}
+                >
+                  Source
+                  {getSortIcon('source')}
+                </span>
+              </TableHead>
 
               <TableHead className="w-[100px]">
-                <Button
-                  variant="ghost"
+                <div
+                  className="flex items-center justify-center cursor-pointer hover:text-foreground"
                   onClick={() => handleSort('score')}
-                  className="h-auto p-0 font-medium hover:bg-transparent"
                 >
                   Score
                   {getSortIcon('score')}
-                </Button>
+                </div>
               </TableHead>
 
-              <TableHead className="w-[120px]">Status</TableHead>
+              <TableHead className="w-[120px]">
+                <span
+                  className="flex items-center cursor-pointer hover:text-foreground"
+                  onClick={() => handleSort('status')}
+                >
+                  Status
+                  {getSortIcon('status')}
+                </span>
+              </TableHead>
 
-              <TableHead className="w-[80px]">Actions</TableHead>
+              <TableHead className="w-[80px]">
+                <span className="flex items-center justify-center">
+                  Actions
+                </span>
+              </TableHead>
             </TableRow>
           </TableHeader>
 
@@ -267,14 +286,14 @@ export function LeadsTable() {
                   </Badge>
                 </TableCell>
 
-                <TableCell onClick={(e) => e.stopPropagation()}>
+                <TableCell onClick={(e) => e.stopPropagation()} className="text-center">
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => selectLead(lead.id)}
-                    className="h-8 w-8 p-0"
+                    className="h-8 w-8 p-0 mx-auto"
                   >
-                    <Eye className="h-4 w-4" />
+                    <Goal className="h-4 w-4" />
                     <span className="sr-only">View details</span>
                   </Button>
                 </TableCell>

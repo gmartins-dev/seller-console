@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Pagination } from '@/components/ui/pagination';
-import { DollarSign, Building2, Calendar, Target, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import { DollarSign, Building2, Calendar, Goal, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { useOpportunityFilters } from '@/hooks/use-opportunity-filters';
 import { cn } from '@/lib/utils';
 import type { OpportunityStage } from '@/types';
@@ -31,7 +31,7 @@ const stageConfig: Record<
   proposal: { label: 'Proposal', variant: 'default', color: 'bg-purple-100 text-purple-800' },
   negotiation: { label: 'Negotiation', variant: 'default', color: 'bg-orange-100 text-orange-800' },
   closed_won: { label: 'Closed Won', variant: 'default', color: 'bg-green-100 text-green-800' },
-  closed_lost: { label: 'Closed Lost', variant: 'destructive', color: 'bg-red-100 text-red-800' },
+  closed_lost: { label: 'Closed Lost', variant: 'destructive', color: 'bg-red-100 text-gray-800' },
 };
 
 // Format currency
@@ -88,7 +88,7 @@ export function OpportunitiesTable() {
       <div className="py-12 text-center">
         <div className="mb-4 flex justify-center">
           <div className="bg-muted rounded-full p-6">
-            <Target className="text-muted-foreground h-8 w-8" />
+            <Goal className="text-muted-foreground h-8 w-8" />
           </div>
         </div>
         <h3 className="text-foreground mb-2 text-lg font-medium">
@@ -152,105 +152,105 @@ export function OpportunitiesTable() {
         <div className="rounded-md border">
           <div className="overflow-x-auto">
             <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[250px]">
-                <button
-                  className="flex items-center gap-2 hover:text-foreground"
-                  onClick={() => sortBy('name')}
-                >
-                  <Target className="h-4 w-4" />
-                  Opportunity
-                  {getSortIcon('name')}
-                </button>
-              </TableHead>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[250px]">
+                    <button
+                      className="flex items-center gap-2 hover:text-foreground"
+                      onClick={() => sortBy('name')}
+                    >
+                      <Goal className="h-4 w-4" />
+                      Opportunity
+                      {getSortIcon('name')}
+                    </button>
+                  </TableHead>
 
-              <TableHead className="hidden md:table-cell">
-                <button
-                  className="flex items-center gap-2 hover:text-foreground"
-                  onClick={() => sortBy('accountName')}
-                >
-                  <Building2 className="h-4 w-4" />
-                  Account
-                  {getSortIcon('accountName')}
-                </button>
-              </TableHead>
+                  <TableHead className="hidden md:table-cell">
+                    <button
+                      className="flex items-center gap-2 hover:text-foreground"
+                      onClick={() => sortBy('accountName')}
+                    >
+                      <Building2 className="h-4 w-4" />
+                      Account
+                      {getSortIcon('accountName')}
+                    </button>
+                  </TableHead>
 
-              <TableHead className="w-[120px]">
-                <button
-                  className="flex items-center gap-2 hover:text-foreground"
-                  onClick={() => sortBy('stage')}
-                >
-                  Stage
-                  {getSortIcon('stage')}
-                </button>
-              </TableHead>
+                  <TableHead className="w-[120px]">
+                    <button
+                      className="flex items-center gap-2 hover:text-foreground"
+                      onClick={() => sortBy('stage')}
+                    >
+                      Stage
+                      {getSortIcon('stage')}
+                    </button>
+                  </TableHead>
 
-              <TableHead className="w-[120px] text-right">
-                <button
-                  className="flex items-center justify-end gap-2 hover:text-foreground ml-auto"
-                  onClick={() => sortBy('amount')}
-                >
-                  <DollarSign className="h-4 w-4" />
-                  Amount
-                  {getSortIcon('amount')}
-                </button>
-              </TableHead>
+                  <TableHead className="w-[120px] text-right">
+                    <button
+                      className="flex items-center justify-end gap-2 hover:text-foreground ml-auto"
+                      onClick={() => sortBy('amount')}
+                    >
+                      <DollarSign className="h-4 w-4" />
+                      Amount
+                      {getSortIcon('amount')}
+                    </button>
+                  </TableHead>
 
-              <TableHead className="hidden w-[120px] lg:table-cell">
-                <button
-                  className="flex items-center gap-2 hover:text-foreground"
-                  onClick={() => sortBy('createdAt')}
-                >
-                  <Calendar className="h-4 w-4" />
-                  Created
-                  {getSortIcon('createdAt')}
-                </button>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
+                  <TableHead className="hidden w-[120px] lg:table-cell">
+                    <button
+                      className="flex items-center gap-2 hover:text-foreground"
+                      onClick={() => sortBy('createdAt')}
+                    >
+                      <Calendar className="h-4 w-4" />
+                      Created
+                      {getSortIcon('createdAt')}
+                    </button>
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
 
-          <TableBody>
-            {paginatedOpportunities.map((opportunity) => (
-              <TableRow key={opportunity.id} className="hover:bg-muted/50">
-                <TableCell>
-                  <div>
-                    <div className="text-foreground font-medium">{opportunity.name}</div>
-                    <div className="text-muted-foreground text-sm md:hidden">
-                      {opportunity.accountName}
-                    </div>
-                  </div>
-                </TableCell>
+              <TableBody>
+                {paginatedOpportunities.map((opportunity) => (
+                  <TableRow key={opportunity.id} className="hover:bg-muted/50">
+                    <TableCell>
+                      <div>
+                        <div className="text-foreground font-medium">{opportunity.name}</div>
+                        <div className="text-muted-foreground text-sm md:hidden">
+                          {opportunity.accountName}
+                        </div>
+                      </div>
+                    </TableCell>
 
-                <TableCell className="hidden md:table-cell">
-                  <div className="flex items-center gap-2">
-                    <Building2 className="text-muted-foreground h-4 w-4" />
-                    <span className="font-medium">{opportunity.accountName}</span>
-                  </div>
-                </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      <div className="flex items-center gap-2">
+                        <Building2 className="text-muted-foreground h-4 w-4" />
+                        <span className="font-medium">{opportunity.accountName}</span>
+                      </div>
+                    </TableCell>
 
-                <TableCell>
-                  <Badge
-                    variant={stageConfig[opportunity.stage].variant}
-                    className={cn('text-xs', stageConfig[opportunity.stage].color)}
-                  >
-                    {stageConfig[opportunity.stage].label}
-                  </Badge>
-                </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={stageConfig[opportunity.stage].variant}
+                        className={cn('text-xs', stageConfig[opportunity.stage].color)}
+                      >
+                        {stageConfig[opportunity.stage].label}
+                      </Badge>
+                    </TableCell>
 
-                <TableCell className="text-right">
-                  <div className="font-medium">{formatCurrency(opportunity.amount)}</div>
-                </TableCell>
+                    <TableCell className="text-right">
+                      <div className="font-medium">{formatCurrency(opportunity.amount)}</div>
+                    </TableCell>
 
-                <TableCell className="hidden lg:table-cell">
-                  <div className="text-muted-foreground text-sm">
-                    {formatDate(opportunity.createdAt)}
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                    <TableCell className="hidden lg:table-cell">
+                      <div className="text-muted-foreground text-sm">
+                        {formatDate(opportunity.createdAt)}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         </div>
       </div>
